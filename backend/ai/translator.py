@@ -42,13 +42,13 @@ class MedicalTranslator:
                 genai.configure(api_key=settings.GEMINI_API_KEY)
                 model = genai.GenerativeModel('gemini-1.5-flash')
                 
-                prompt = f"""You are an expert clinical medical translator for the 12C Medical Support System.
-Translate the following medical phrase / instruction accurately from {source_lang} to {target_lang}.
-Keep medical term accuracy high and include script + English technical term in parentheses where helpful.
+                prompt = f"""You are a functional medical text translator for the 12C Medical Support System.
+Translate the following medical phrase / instruction from {source_lang} to {target_lang}.
+Preserve the exact clinical terms, dosages, and instructions faithfully. Do NOT add new diagnoses, unmentioned medications, or unsolicited clinical advice.
 
 Text to translate: "{text_strip}"
 
-Provide ONLY the final translated text response."""
+Provide ONLY the translation text without preamble."""
 
                 res = model.generate_content(prompt)
                 if res and res.text:
@@ -61,7 +61,7 @@ Provide ONLY the final translated text response."""
             except Exception:
                 pass
 
-        # Fallback offline dictionary & pattern translator
+        # Fallback dictionary & functional term mapping
         translated = text_strip
         if s_lower in self.quick_dict and t_lower in self.quick_dict[s_lower]:
             for key, val in self.quick_dict[s_lower][t_lower].items():
@@ -71,17 +71,17 @@ Provide ONLY the final translated text response."""
 
         if translated == text_strip:
             if t_lower == "telugu":
-                translated = f"[తెలుగు అనువాదం]: {text_strip} (వైద్య నిపుణుడి సలహా తీసుకోండి)"
+                translated = f"[తెలుగు]: {text_strip}"
             elif t_lower == "hindi":
-                translated = f"[हिंदी अनुवाद]: {text_strip} (चिकित्सक की सलाह लें)"
+                translated = f"[हिंदी]: {text_strip}"
             elif t_lower == "tamil":
-                translated = f"[தமிழ் மொழியாக்கம்]: {text_strip}"
+                translated = f"[தமிழ்]: {text_strip}"
             elif t_lower == "kannada":
-                translated = f"[கன்னட மொழிபெயர்ப்பு]: {text_strip}"
+                translated = f"[ಕನ್ನಡ]: {text_strip}"
             elif t_lower == "malayalam":
-                translated = f"[മലയാളം വിവർത്തനം]: {text_strip}"
+                translated = f"[മലയാളം]: {text_strip}"
             else:
-                translated = f"[{target_lang} Translation]: {text_strip}"
+                translated = f"[{target_lang}]: {text_strip}"
 
         return {
             "original_text": text_strip,

@@ -7,7 +7,7 @@ The database schema consists of 18 tables:
 1. `users`: User authentication, full name, role, timestamp.
 2. `patient_profiles`: Patient age, gender, blood group, allergies, chronic conditions, current city, emergency contact.
 3. `medical_reports`: Uploaded report file details, OCR raw text, summary, recommended specialty, status.
-4. `extracted_entities`: ClinicalBERT entities (Disease, Symptom, Medication, Procedure, BodyPart), confidence, context snippet.
+4. `extracted_entities`: Biomedical NER entities (Disease, Symptom, Medication, Procedure, BodyPart), confidence, context snippet.
 5. `hospitals`: Hospital metadata, city, address, latitude/longitude, specialties, rating, distance, insurance accepted, facilities.
 6. `doctors`: Doctor qualifications, specialty, experience years, rating, consultation fee, availability.
 7. `pharmacies`: 24/7 pharmacy directory, address, location, medication stock summary.

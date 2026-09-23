@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Upload, FileText, CheckCircle2, Loader2, Sparkles, ArrowRight, ShieldCheck } from 'lucide-react';
-import { uploadReportApi } from '../services/api';
+import { uploadReportApi, setActiveReportId } from '../services/api';
 import { DisclaimerBadge } from '../components/DisclaimerBadge';
 
 export const UploadReportPage: React.FC = () => {
@@ -13,9 +13,9 @@ export const UploadReportPage: React.FC = () => {
   const steps = [
     "Uploading medical report file...",
     "Extracting OCR text from document...",
-    "Running ClinicalBERT / BioBERT entity extraction...",
+    "Running Biomedical NER entity extraction...",
     "Retrieving grounded RAG clinical guidelines...",
-    "Generating hospital & doctor recommendations..."
+    "Generating personalized hospital recommendations..."
   ];
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,16 +33,25 @@ export const UploadReportPage: React.FC = () => {
       await new Promise(r => setTimeout(r, 600));
     }
 
+    let reportId: number | null = null;
     try {
       if (file) {
-        await uploadReportApi(file);
+        const res = await uploadReportApi(file);
+        if (res && res.id) {
+          reportId = res.id;
+          setActiveReportId(reportId);
+        }
       }
     } catch (e) {
-      console.warn("Using fallback local report model");
+      console.warn("Upload processing error", e);
     }
 
     setIsProcessing(false);
-    navigate('/reports/1/analysis');
+    if (reportId) {
+      navigate(`/reports/${reportId}/analysis`);
+    } else {
+      navigate('/reports');
+    }
   };
 
   return (
@@ -54,7 +63,10 @@ export const UploadReportPage: React.FC = () => {
         </div>
         <h1 className="text-3xl font-black text-slate-900">Upload Medical Report</h1>
         <p className="text-xs text-slate-500 mt-2">
-          Upload PDF, PNG, JPG, or scanned diagnostic lab/hospital reports. Supported files are parsed via OCR and ClinicalBERT.
+          Upload PDF, PNG, JPG, or scanned diagnostic lab/hospital reports. Supported files are parsed via OCR and Biomedical NER.
+        </p>
+        <p className="text-[11px] text-slate-400 mt-1 font-medium">
+          Supports typed & scanned medical reports (PDF, JPG, PNG) and standard lab tables. Handwritten reports are not supported.
         </p>
       </div>
 
@@ -87,7 +99,9 @@ export const UploadReportPage: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <button
                   type="button"
-                  onClick={() => setFile(new File(["Cardiology Report"], "Cardiology_Angiography_Report.pdf", { type: "application/pdf" }))}
+                  onClick={() => setFile(new File([
+                    `CARDIOLOGY ANGIOGRAPHY & DIAGNOSTIC REPORT\nPatient Name: Rajesh Verma | Age: 48 | Sex: Male\nDepartment: Cardiology & Interventional Medicine\nClinical Findings: Patient presents with exertional angina (CCS Class II) and dyspnea on exertion.\nCoronary Angiography:\n1. Left Main (LM): Normal caliber.\n2. LAD: 85% proximal stenosis with discrete calcified plaque.\n3. LCx: Minor luminal irregularity (30%).\n4. RCA: 70% mid-vessel stenosis.\nEchocardiogram: LVEF 55%, mild concentric LV hypertrophy.\nImpression: Severe Double Vessel Coronary Artery Disease.\nPlan: Elective Percutaneous Coronary Intervention (PCI) with Drug-Eluting Stents in LAD and RCA.\nMedications: Aspirin 75mg OD, Atorvastatin 40mg HS, Metoprolol 50mg BD.`
+                  ], "Cardiology_Angiography_Report.txt", { type: "text/plain" }))}
                   className="p-3 bg-white hover:bg-sky-50 rounded-xl border border-slate-200 text-left text-xs transition-colors flex items-center justify-between"
                 >
                   <div>
@@ -99,7 +113,9 @@ export const UploadReportPage: React.FC = () => {
 
                 <button
                   type="button"
-                  onClick={() => setFile(new File(["Neurology Report"], "Brain_MRI_Neurology_Report.pdf", { type: "application/pdf" }))}
+                  onClick={() => setFile(new File([
+                    `NEUROLOGICAL CONSULTATION & MRI REPORT\nPatient Name: Anitha Rao | Age: 52 | Sex: Female\nDepartment: Neurological Sciences & Brain Spine Center\nClinical Observation: Persistent localized headache, focal motor weakness in left hand, intermittent dizziness for 3 weeks.\nMRI Brain with Contrast Summary:\n- Well-demarcated 2.4 cm extra-axial space-occupying lesion in right parasagittal parietal region.\n- Moderate surrounding vasogenic edema without midline shift.\nImpression: Benign parasagittal Meningioma (WHO Grade I) with focal cerebral edema.\nPlan: Neurosurgical consultation for elective craniotomy and tumor excision.\nPrescription: Levetiracetam 500mg BD.`
+                  ], "Brain_MRI_Neurology_Report.txt", { type: "text/plain" }))}
                   className="p-3 bg-white hover:bg-sky-50 rounded-xl border border-slate-200 text-left text-xs transition-colors flex items-center justify-between"
                 >
                   <div>

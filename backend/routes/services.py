@@ -1,168 +1,300 @@
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from database import get_db
 from models import (
-    Pharmacy, InsuranceProvider, EmergencyContact,
-    Appointment, Conversation, ChatMessage, MedicalKnowledge, MedicalReport
+    Conversation, ChatMessage, MedicalReport,
+    User, PatientProfile, Hospital
 )
 from schemas import (
-    AppointmentCreate, AppointmentSchema, SymptomGuidanceRequest,
-    SymptomGuidanceResponse, TranslationRequest, TranslationResponse,
-    ChatRequest, ChatResponse
+    ChatRequest, ChatResponse,
+    RAGQueryRequest, RAGQueryResponse,
+    RAGProfileGroundingRequest, RAGProfileGroundingResponse
 )
+from ai.healthcare_assistant import healthcare_assistant
 from ai.rag_engine import rag_engine
-from ai.translator import medical_translator
+from routes.auth import get_shared_clinical_context
+from security import get_current_user
+from config import settings
 
-router = APIRouter(prefix="/services", tags=["Healthcare Services & AI Support"])
+router = APIRouter(prefix="/services", tags=["Contextual AI Healthcare Assistant & RAG"])
 
-# 1. Pharmacies
-@router.get("/pharmacies")
-def get_pharmacies(city: str = "Hyderabad", db: Session = Depends(get_db)):
-    return db.query(Pharmacy).filter(Pharmacy.city.ilike(f"%{city}%")).all() or db.query(Pharmacy).all()
 
-# 2. Insurance Help
-@router.get("/insurance")
-def get_insurance_providers(db: Session = Depends(get_db)):
-    return db.query(InsuranceProvider).all()
-
-# 3. Emergency Assistance & Contacts
-@router.get("/emergency")
-def get_emergency_services(city: str = "Hyderabad", db: Session = Depends(get_db)):
-    contacts = db.query(EmergencyContact).filter(EmergencyContact.city.ilike(f"%{city}%")).all() or db.query(EmergencyContact).all()
-    return {
-        "emergency_number": "108",
-        "ambulance": "+91 40 1066",
-        "trauma_centers": contacts,
-        "location_status": f"Active GPS Location in {city}",
-        "disclaimer": "FOR IMMEDIATE LIFE-THREATENING EMERGENCY, CALL 108 OR PROCEED TO NEAREST TRAUMA CENTER."
-    }
-
-# 4. Appointments
-@router.post("/appointments", response_model=AppointmentSchema)
-def book_appointment(apt: AppointmentCreate, user_id: int = 1, db: Session = Depends(get_db)):
-    new_apt = Appointment(
-        user_id=user_id,
-        hospital_id=apt.hospital_id,
-        doctor_id=apt.doctor_id,
-        patient_name=apt.patient_name,
-        appointment_date=apt.appointment_date,
-        appointment_time=apt.appointment_time,
-        status="CONFIRMED",
-        reason=apt.reason
-    )
-    db.add(new_apt)
-    db.commit()
-    db.refresh(new_apt)
-    return new_apt
-
-@router.get("/appointments", response_model=List[AppointmentSchema])
-def get_my_appointments(user_id: int = 1, db: Session = Depends(get_db)):
-    return db.query(Appointment).filter(Appointment.user_id == user_id).order_by(Appointment.id.desc()).all()
-
-# 5. Symptom Guidance
-@router.post("/symptoms", response_model=SymptomGuidanceResponse)
-def check_symptoms(req: SymptomGuidanceRequest):
-    stext = req.symptoms_text.lower()
-    
-    if "chest pain" in stext or "severe pressure" in stext or "fainting" in stext:
-        urgency = "EMERGENCY"
-        spec = "Emergency Cardiology"
-        actions = ["CALL 108 IMMEDIATELY", "Do not drive yourself to hospital", "Chew Aspirin 300mg if advised by paramedic"]
-    elif "breath" in stext or "headache" in stext or "dizziness" in stext:
-        urgency = "URGENT"
-        spec = "Cardiology / Neurology"
-        actions = ["Schedule specialist consultation within 24-48 hours", "Avoid strenuous physical activity", "Keep blood pressure log"]
-    else:
-        urgency = "MODERATE"
-        spec = "General Medicine / Orthopedics"
-        actions = ["Book routine outpatient consultation", "Monitor symptom progression"]
-
-    return {
-        "summary": f"Symptoms evaluated: '{req.symptoms_text}' over {req.duration}.",
-        "urgency_level": urgency,
-        "recommended_specialty": spec,
-        "guidance_notes": [
-            f"Evaluated urgency level: {urgency}",
-            f"Primary specialty alignment: {spec}",
-            "Patient should present recent diagnostic reports during consultation"
-        ],
-        "suggested_actions": actions,
-        "disclaimer": "AI Symptom guidance is for triage decision support only. Consult a doctor for diagnosis."
-    }
-
-# 6. Medical Translation
-@router.post("/translate", response_model=TranslationResponse)
-def translate_text(req: TranslationRequest):
-    return medical_translator.translate(req.text, req.source_lang, req.target_lang)
-
-# 7. AI Healthcare Assistant (Conversational RAG)
 @router.post("/chat", response_model=ChatResponse)
-def ai_assistant_chat(req: ChatRequest, user_id: int = 1, db: Session = Depends(get_db)):
-    # Fetch user conversation or create new
-    if not req.conversation_id:
-        conv = Conversation(user_id=user_id, title=req.message[:30])
+def ai_assistant_chat(
+    req: ChatRequest,
+    user_id: Optional[int] = None,
+    report_id: Optional[int] = Query(None),
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    RAG-grounded conversational healthcare decision support endpoint.
+    Operates with single-user/demo session persistence.
+    """
+    if user_id is not None and user_id != current_user.id and getattr(current_user, "role", "") != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Forbidden: You do not have authorization to access another patient's chat."
+        )
+    target_user_id = current_user.id if current_user else (user_id or 1)
+
+    # 1. Conversation Isolation / Session Persistence
+    if req.conversation_id:
+        conv = db.query(Conversation).filter(Conversation.id == req.conversation_id).first()
+        if not conv:
+            conv = Conversation(id=req.conversation_id, user_id=target_user_id, title=req.message[:40])
+            db.add(conv)
+            db.commit()
+            db.refresh(conv)
+        elif conv.user_id != target_user_id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Forbidden: You do not have authorization to access this patient's conversation."
+            )
+        conv_id = conv.id
+    else:
+        conv = Conversation(user_id=target_user_id, title=req.message[:40])
         db.add(conv)
         db.commit()
         db.refresh(conv)
         conv_id = conv.id
-    else:
-        conv_id = req.conversation_id
 
-    # Save user message
+    # 2. Retrieve Conversation History for Multi-Turn Context
+    prior_messages = (
+        db.query(ChatMessage)
+        .filter(ChatMessage.conversation_id == conv_id)
+        .order_by(ChatMessage.id.asc())
+        .all()
+    )
+    history_list = [{"sender": m.sender, "text": m.text} for m in prior_messages]
+
+    # 3. Save User Message
     u_msg = ChatMessage(conversation_id=conv_id, sender="user", text=req.message)
     db.add(u_msg)
     db.commit()
 
-    # Load report context if available
-    report_ctx = ""
-    if req.report_id:
-        rep = db.query(MedicalReport).filter(MedicalReport.id == req.report_id).first()
-        if rep:
-            report_ctx = f"Report: {rep.filename} | Specialty: {rep.recommended_specialty} | Summary: {rep.summary}"
+    # 4. Active Patient Context (Shared Clinical Profile for active demo patient)
+    profile_dict = get_shared_clinical_context(target_user_id, db)
+
+    # 5. Medical Report Context (Resolution: URL/Req report_id -> Session/Query report_id -> Latest report)
+    target_report_id = req.report_id if req.report_id is not None else report_id
+    rep = None
+    if target_report_id is not None and target_report_id <= 0:
+        # Explicit request for NO active medical report context
+        rep = None
+    elif target_report_id:
+        rep_obj = db.query(MedicalReport).filter(MedicalReport.id == target_report_id).first()
+        if rep_obj:
+            if rep_obj.user_id != target_user_id:
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail="Forbidden: You do not have authorization to access this patient's medical report."
+                )
+            rep = rep_obj
     else:
-        latest_rep = db.query(MedicalReport).filter(MedicalReport.user_id == user_id).order_by(MedicalReport.id.desc()).first()
-        if latest_rep:
-            report_ctx = f"Report: {latest_rep.filename} | Specialty: {latest_rep.recommended_specialty} | Summary: {latest_rep.summary}"
+        # No explicit report_id requested; resolve to latest patient report if one exists
+        rep = (
+            db.query(MedicalReport)
+            .filter(MedicalReport.user_id == target_user_id)
+            .order_by(MedicalReport.id.desc())
+            .first()
+        )
 
-    # Fetch knowledge base for RAG
-    kb_docs = db.query(MedicalKnowledge).all()
-    kb_dicts = [
-        {"id": k.id, "title": k.title, "category": k.category, "content": k.content, "keywords": k.keywords, "source_reference": k.source_reference}
-        for k in kb_docs
-    ]
+    report_dict = None
+    if rep:
+        report_dict = {
+            "id": rep.id,
+            "summary": rep.summary,
+            "recommended_specialty": rep.recommended_specialty,
+            "entities": [e.entity_name for e in rep.entities] if rep.entities else []
+        }
 
-    retrieved = rag_engine.retrieve_documents(req.message, kb_dicts, top_k=2)
-    rag_res = rag_engine.generate_response(req.message, retrieved, report_ctx)
+    # 6. Hospital Context
+    hospital_dict = None
+    if req.hospital_id:
+        h = db.query(Hospital).filter(Hospital.id == req.hospital_id).first()
+        if h:
+            hospital_dict = {"name": h.name, "city": h.city}
 
-    # Save assistant message
-    a_msg = ChatMessage(conversation_id=conv_id, sender="assistant", text=rag_res["reply"])
+    # 7. Process through Grounded AI Healthcare Assistant Engine
+    result = healthcare_assistant.process_chat_query(
+        user_query=req.message,
+        conversation_history=history_list,
+        patient_profile=profile_dict,
+        medical_report=report_dict,
+        hospital_context=hospital_dict
+    )
+
+    # 8. Persist Assistant Response
+    a_msg = ChatMessage(conversation_id=conv_id, sender="assistant", text=result["reply"])
     db.add(a_msg)
     db.commit()
 
     return {
-        "reply": rag_res["reply"],
+        "reply": result["reply"],
         "conversation_id": conv_id,
-        "citations": rag_res["citations"],
-        "disclaimer": "AI-generated medical response. Verify with a registered healthcare professional."
+        "citations": result["citations"],
+        "grounding_status": result["grounding_status"],
+        "retrieved_evidence": result["retrieved_evidence"],
+        "is_emergency": result.get("is_emergency", False),
+        "emergency_alert": result.get("emergency_alert"),
+        "patient_context_applied": result.get("patient_context_applied"),
+        "suggested_followups": result.get("suggested_followups", []),
+        "safety_guardrails_triggered": result.get("safety_guardrails_triggered", []),
+        "disclaimer": result.get("disclaimer", healthcare_assistant.MANDATORY_SAFETY_DISCLAIMER),
+        "llm_provider": result.get("llm_provider", "deterministic_fallback"),
+        "model_used": result.get("model_used", "none")
     }
 
-# 8. Local Health Information
-@router.get("/local-health")
-def get_local_health_info(city: str = "Hyderabad", db: Session = Depends(get_db)):
+
+# =====================================================================
+# PHASE 4: MEDICAL KNOWLEDGE + RAG DEDICATED ENDPOINTS
+# =====================================================================
+
+@router.post("/rag/query", response_model=RAGQueryResponse)
+def rag_semantic_query(
+    req: RAGQueryRequest,
+    user_id: Optional[int] = None,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Evidence-grounded medical knowledge RAG query endpoint.
+    Retrieves authoritative clinical guideline evidence and synthesizes responses
+    via Ollama local LLM runtime, fusing Phase 3 Clinical Profile context.
+    """
+    if user_id is not None and user_id != current_user.id and getattr(current_user, "role", "") != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Forbidden: You do not have authorization to access another patient's data."
+        )
+    target_user_id = current_user.id if current_user else (user_id or 1)
+    clinical_profile = None
+
+    if req.use_clinical_profile:
+        clinical_profile = get_shared_clinical_context(target_user_id, db)
+        result = rag_engine.query_with_clinical_profile(
+            user_query=req.query,
+            clinical_profile=clinical_profile,
+            top_k=req.top_k or 3,
+            threshold=req.threshold
+        )
+    else:
+        retrieved = rag_engine.retrieve_documents(
+            query=req.query,
+            top_k=req.top_k or 3,
+            threshold=req.threshold
+        )
+        result = rag_engine.generate_response(
+            user_query=req.query,
+            retrieved_docs=retrieved
+        )
+
     return {
-        "city": city,
-        "advisories": [
-            "Seasonal Dengue & Viral Fever Precaution: Stay hydrated and use mosquito repellent.",
-            "International Traveler Vaccination Center available at Airport Health Office.",
-            "Clean Water & Sanitize Standards compliant across all accredited medical centers."
-        ],
-        "blood_banks": [
-            {"name": "Central Red Cross Blood Bank", "phone": "+91 40 2320 2345", "address": "Lakdikapul, Hyderabad"},
-            {"name": "Chiranjeevi Blood Bank", "phone": "+91 40 2355 4545", "address": "Jubilee Hills, Hyderabad"}
-        ],
-        "diagnostic_centers": [
-            {"name": "Vijaya Diagnostic Centre", "rating": 4.8, "address": "Somajiguda, Hyderabad"},
-            {"name": "Lucid Medical Diagnostics", "rating": 4.7, "address": "Banjara Hills, Hyderabad"}
-        ]
+        "reply": result["reply"],
+        "citations": result.get("citations", []),
+        "grounding_status": result.get("grounding_status", "GROUNDED"),
+        "retrieved_evidence": result.get("retrieved_evidence", []),
+        "llm_provider": result.get("llm_provider", "none"),
+        "model_used": result.get("model_used", "none"),
+        "clinical_profile_used": clinical_profile if req.use_clinical_profile else None
     }
+
+
+@router.post("/rag/profile-grounding", response_model=RAGProfileGroundingResponse)
+def rag_profile_grounding(
+    req: RAGProfileGroundingRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Directly grounds the patient's Phase 3 Shared Clinical Profile against
+    verified authoritative clinical practice guidelines.
+    """
+    if req.user_id is not None and req.user_id != current_user.id and getattr(current_user, "role", "") != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Forbidden: You do not have authorization to access another patient's data."
+        )
+    target_user_id = current_user.id if current_user else (req.user_id or 1)
+    clinical_profile = get_shared_clinical_context(target_user_id, db)
+
+    grounding_result = rag_engine.ground_clinical_profile(
+        clinical_profile=clinical_profile,
+        top_k=req.top_k or 2
+    )
+
+    return {
+        "grounding_status": grounding_result["grounding_status"],
+        "matched_guidelines": grounding_result["matched_guidelines"],
+        "citations": grounding_result["citations"],
+        "patient_conditions_evaluated": grounding_result["patient_conditions_evaluated"],
+        "patient_procedures_evaluated": grounding_result["patient_procedures_evaluated"]
+    }
+
+
+
+@router.get("/chat/history")
+def get_chat_history(
+    conversation_id: Optional[int] = None,
+    user_id: Optional[int] = None,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Retrieves conversation history for demo session persistence."""
+    if user_id is not None and user_id != current_user.id and getattr(current_user, "role", "") != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Forbidden: You do not have authorization to access this patient's conversation."
+        )
+    target_user_id = current_user.id if current_user else (user_id or 1)
+
+    if conversation_id:
+        conv = (
+            db.query(Conversation)
+            .filter(Conversation.id == conversation_id)
+            .first()
+        )
+        if not conv:
+            raise HTTPException(
+                status_code=404,
+                detail="Conversation not found."
+            )
+        if conv.user_id != current_user.id and getattr(current_user, "role", "") != "admin":
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Forbidden: You do not have authorization to access this patient's conversation."
+            )
+        messages = (
+            db.query(ChatMessage)
+            .filter(ChatMessage.conversation_id == conv.id)
+            .order_by(ChatMessage.id.asc())
+            .all()
+        )
+        return {
+            "conversation_id": conv.id,
+            "title": conv.title,
+            "created_at": conv.created_at,
+            "messages": [
+                {"id": m.id, "sender": m.sender, "text": m.text, "created_at": m.created_at}
+                for m in messages
+            ]
+        }
+
+    conversations = (
+        db.query(Conversation)
+        .filter(Conversation.user_id == target_user_id)
+        .order_by(Conversation.id.desc())
+        .all()
+    )
+    return [
+        {
+            "id": c.id,
+            "title": c.title,
+            "created_at": c.created_at,
+            "message_count": len(c.messages)
+        }
+        for c in conversations
+    ]
+

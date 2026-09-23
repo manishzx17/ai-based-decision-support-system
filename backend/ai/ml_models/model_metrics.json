@@ -1,0 +1,67 @@
+{
+  "cost_model": {
+    "model_type": "XGBoost Regressor",
+    "n_estimators": 220,
+    "max_depth": 5,
+    "learning_rate": 0.07,
+    "mae_inr": 24847.21,
+    "rmse_inr": 33486.84,
+    "r2_score": 0.9673,
+    "input_features": [
+      "age",
+      "comorbidity_count",
+      "has_diabetes",
+      "has_hypertension",
+      "has_cardiac_history",
+      "planned_los_days",
+      "predicted_los_days",
+      "gender",
+      "treatment_name",
+      "specialty",
+      "city",
+      "hospital_tier",
+      "room_type",
+      "insurance_type"
+    ],
+    "target_leakage_policy": "Zero Target Leakage Enforced: Cost model is trained using out-of-fold predicted stay duration and never ingests actual realized post-stay.",
+    "error_band_definition": "Empirical benchmark error band based on held-out RMSE (±1.96 × held-out RMSE). Not a formal statistical confidence interval."
+  },
+  "los_model": {
+    "model_type": "XGBoost Regressor",
+    "n_estimators": 180,
+    "max_depth": 4,
+    "learning_rate": 0.06,
+    "mae_days": 0.716,
+    "rmse_days": 0.987,
+    "r2_score": 0.8545,
+    "input_features": [
+      "age",
+      "comorbidity_count",
+      "has_diabetes",
+      "has_hypertension",
+      "has_cardiac_history",
+      "gender",
+      "treatment_name",
+      "specialty",
+      "city",
+      "hospital_tier",
+      "room_type"
+    ],
+    "target_leakage_policy": "Strictly pre-operative baseline features only. Cost and post-hospitalization outcomes are excluded."
+  },
+  "training_dataset": {
+    "dataset_name": "Dataset 4",
+    "dataset_label": "Synthetic Research Benchmark Data",
+    "dataset_type": "SYNTHETIC BENCHMARK DATA",
+    "is_real_patient_records": false,
+    "calibration_source": "National Health Authority (NHA / PMJAY) standard package tariffs & GIPSA schedule of charges",
+    "disclosure": "The 2,500 patient episodes in Dataset 4 are synthetic benchmark data generated for decision-support algorithm testing. High benchmark performance metrics reflect the synthetic data-generation process and do not establish real-world clinical validity. They do not represent real patient records."
+  },
+  "split": {
+    "train_samples": 1750,
+    "val_samples": 375,
+    "test_samples": 375,
+    "random_seed": 42
+  },
+  "evaluation_disclosure": "Because Dataset 4 is synthetic, high model evaluation metrics (MAE/RMSE/R\u00b2) reflect consistency with the calibrated economic simulation and must not be interpreted as real-world clinical or financial precision."
+}

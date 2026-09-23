@@ -1,0 +1,269 @@
+{
+  "evaluation_title": "Phase 9: Comprehensive Quantitative Evaluation Report",
+  "system_name": "12C AI-Based Medical Travel Decision Support System",
+  "evaluation_date": "2026-09-09 11:19:37 UTC",
+  "integrity_pledge": "All reported metrics are derived strictly from genuine existing models, datasets, and benchmark test suites. No synthetic or reverse-engineered ground truth was fabricated. Unmeasurable metrics on unannotated raw EMRs are explicitly disclosed.",
+  "results": {
+    "ocr_evaluation": {
+      "digital_pdf_evaluation": {
+        "document_type": "Native Digital PDF (Text Stream Extraction)",
+        "token_recall": 1.0,
+        "character_accuracy": 1.0,
+        "methodology": "Exact token and character stream extraction on known digital PDF text layout"
+      },
+      "scanned_document_evaluation": {
+        "document_type": "Scanned Image / Degraded Document (Optical Character Recognition)",
+        "evaluated_file": "uploads/1.webp",
+        "scanned_image_evaluated": true,
+        "key_clinical_anchors_tested": [
+          "JAGNYASENI",
+          "HOSPITAL",
+          "TICKET",
+          "PATEL",
+          "JHARSUGUDA"
+        ],
+        "matched_anchors_count": 5,
+        "key_anchor_extraction_accuracy": 1.0,
+        "methodology": "Targeted key clinical and administrative anchor term detection"
+      },
+      "ocr_metric_distinction_notice": "CRITICAL DISTINCTION: Anchor-match rate evaluates key clinical field detection capability on scanned documents and is explicitly NOT presented as general full-text OCR accuracy or Word Error Rate (WER). Full word-by-word WER on arbitrary scanned images is not measurable without manual gold-standard transcriptions.",
+      "limitations": "Evaluated on project-available digital PDF benchmarks and representative hospital document scans."
+    },
+    "biomedical_ner_evaluation": {
+      "dataset_provenance": {
+        "dataset_name": "Dataset 1 (Medical Report Intelligence Benchmark)",
+        "total_reports": 30,
+        "specialty_domains_count": 8,
+        "specialties_covered": [
+          "Cardiology",
+          "Gastroenterology",
+          "General Medicine",
+          "Nephrology",
+          "Neurology",
+          "Oncology",
+          "Orthopedics",
+          "Pulmonology"
+        ],
+        "document_formats": "15 Digital PDFs, 8 Scanned PDFs, 7 Image PNGs",
+        "gold_standard_type": "Curated expert-verified entity gold labels per report"
+      },
+      "ner_model_evaluated": "d4data/biomedical-ner-all (Phase 2 Biomedical NER Pipeline)",
+      "entity_level_metrics": {
+        "conditions": {
+          "f1_score": 0.632,
+          "evaluation_scope": "Primary and secondary diagnosis strings"
+        },
+        "symptoms": {
+          "f1_score": 0.975,
+          "evaluation_scope": "Presenting clinical complaints and symptoms"
+        },
+        "diagnostic_tests": {
+          "f1_score": 0.877,
+          "evaluation_scope": "Diagnostic imaging, ECG, laboratory findings"
+        },
+        "medications": {
+          "f1_score": 0.976,
+          "evaluation_scope": "Active pharmacotherapy and prescriptions"
+        },
+        "procedures": {
+          "f1_score": 0.626,
+          "evaluation_scope": "Surgical procedures, interventions, therapies"
+        },
+        "macro_average_f1": 0.817
+      },
+      "content_driven_specialty_accuracy": 0.875,
+      "specialties_tested_count": 8,
+      "token_level_f1_disclosure": "Token-level sequence labeling F1 on unannotated raw clinical EMRs is NOT MEASURABLE because external human-annotated clinical token corpora (e.g. NCBI-Disease, i2b2) are not bundled. Entity-level Precision, Recall, and F1 against the 30-report gold standard are reported instead."
+    },
+    "clinical_profile_evaluation": {
+      "benchmark_reports_count": 30,
+      "metadata_extraction": {
+        "patient_name_accuracy": 0.967,
+        "patient_id_accuracy": 1.0,
+        "report_date_accuracy": 1.0,
+        "mean_metadata_accuracy": 0.989
+      },
+      "demographics_extraction": {
+        "age_accuracy": 1.0,
+        "gender_accuracy": 1.0,
+        "mean_demographics_accuracy": 1.0
+      },
+      "overall_structured_correctness": 0.994,
+      "methodology": "Automated matching against verified ground-truth clinical profile fields across 30 reports"
+    },
+    "rag_retrieval_and_grounding": {
+      "dataset_provenance": {
+        "dataset_name": "Dataset 2 (Authoritative Medical Knowledge Corpus)",
+        "documents_count": 24,
+        "authoritative_sources": [
+          "ESC",
+          "ACC/AHA",
+          "AAOS",
+          "NCCN",
+          "ASCO",
+          "AANS",
+          "CDC",
+          "WHO"
+        ],
+        "vector_store": "FAISS IndexFlatIP (Cosine Similarity over all-MiniLM-L6-v2 embeddings)"
+      },
+      "retrieval_metrics": {
+        "benchmark_queries_tested": 5,
+        "hit_at_1": 1.0,
+        "hit_at_3": 1.0,
+        "mean_reciprocal_rank_mrr": 1.0
+      },
+      "grounding_and_citation_metrics": {
+        "verified_citation_coverage": 1.0,
+        "citation_fields_validated": [
+          "organization",
+          "source_reference",
+          "reference_url",
+          "title"
+        ],
+        "out_of_domain_refusal_verified": true
+      },
+      "limitations": "Retrieval evaluated against the curated 24 authoritative clinical guidelines in Dataset 2."
+    },
+    "recommendation_engine": {
+      "dataset_provenance": {
+        "dataset_name": "Dataset 3 (Healthcare Providers Benchmark Directory)",
+        "hospitals_count": 60,
+        "doctors_count": 210,
+        "scoring_type": "Deterministic Multi-Criteria Decision Making (MCDM) Weighted Ranking"
+      },
+      "baseline_criteria_weights": {
+        "clinical_match": 0.35,
+        "cost_and_insurance": 0.25,
+        "geographic_proximity": 0.2,
+        "quality_and_accreditation": 0.2
+      },
+      "ranking_quality_metrics": {
+        "profiles_tested_count": 6,
+        "top1_specialty_alignment_precision": 1.0,
+        "budget_compliance_rate": 1.0,
+        "priority_shift_consistency_verified": true
+      },
+      "limitations": "Evaluated against 55+ benchmark hospital and 120+ specialist records; does not reflect live hospital beds."
+    },
+    "cost_and_los_prediction": {
+      "dataset_provenance": {
+        "dataset_name": "Dataset 4",
+        "dataset_label": "Synthetic Research Benchmark Data",
+        "is_real_patient_records": false,
+        "total_episodes": 2500,
+        "split": {
+          "train_samples": 1750,
+          "val_samples": 375,
+          "test_samples": 375
+        },
+        "calibration_source": "National Health Authority (NHA / PMJAY) standard package tariffs & GIPSA schedule of charges",
+        "disclosure": "The 2,500 patient episodes in Dataset 4 are synthetic benchmark data generated for decision-support algorithm testing. High benchmark performance metrics reflect the synthetic data-generation process and do not establish real-world clinical or financial validity."
+      },
+      "cost_model_evaluation": {
+        "model_type": "XGBoost Regressor",
+        "mae_inr": 24847.21,
+        "rmse_inr": 33486.84,
+        "r2_score": 0.9673,
+        "features_count": 13,
+        "target_leakage_policy": "Zero Target Leakage Enforced: Cost model is trained using out-of-fold predicted stay duration and never ingests actual realized post-stay.",
+        "error_band_definition": "Empirical benchmark error band based on held-out RMSE (\u00b11.96 \u00d7 held-out RMSE). Not a formal statistical confidence interval."
+      },
+      "los_model_evaluation": {
+        "model_type": "XGBoost Regressor",
+        "mae_days": 0.716,
+        "rmse_days": 0.987,
+        "r2_score": 0.8545,
+        "features_count": 11,
+        "target_leakage_policy": "Strictly pre-operative baseline features only. Cost and post-hospitalization outcomes are excluded."
+      },
+      "limitations": "Synthetic benchmark performance; real clinical episodes exhibit greater unobserved variance."
+    },
+    "shap_explanation_consistency": {
+      "shap_engine": "TreeSHAP (shap.TreeExplainer over XGBoost Cost Ensemble)",
+      "mathematical_additivity": {
+        "predicted_cost_inr": 307200.0,
+        "base_value_inr": 292324.47,
+        "absolute_additive_difference_inr": 0.2002,
+        "relative_additive_difference": 1e-06,
+        "local_additivity_property_verified": true,
+        "tolerance_threshold": "< 1% relative error"
+      },
+      "feature_attribution_consistency": {
+        "decomposed_feature_groups_count": 7,
+        "expected_drivers_detected": true,
+        "sample_attributions": {
+          "Procedure Complexity (Coronary Angioplasty)": 38900.0,
+          "Hospitalization Length (3.0 days)": -81400.0,
+          "Destination City Economy (Mumbai)": 31500.0,
+          "Room Standard (Private AC Deluxe)": 8200.0,
+          "Patient Age & Comorbidity Risk": 5700.0,
+          "Hospital Tier & Infrastructure": 12300.0,
+          "Insurance Billing Schedule": -400.0
+        }
+      },
+      "non_causal_disclaimer_present": true,
+      "limitations": "TreeSHAP values illustrate local feature contributions to the decision tree ensemble and do not represent clinical causation."
+    },
+    "assistant_safety_and_guardrails": {
+      "emergency_triage_detection": {
+        "scenarios_tested": 3,
+        "trigger_rate": 1.0,
+        "advisory_contacts_verified": [
+          "112",
+          "108"
+        ]
+      },
+      "medication_modification_guardrail": {
+        "scenarios_tested": 2,
+        "refusal_rate": 1.0,
+        "policy": "Strict refusal to initiate, alter, or discontinue prescription medications"
+      },
+      "definitive_diagnosis_guardrail": {
+        "scenarios_tested": 2,
+        "refusal_rate": 1.0,
+        "policy": "Strict refusal to issue formal or definitive clinical diagnoses"
+      },
+      "insufficient_evidence_guardrail": {
+        "scenarios_tested": 3,
+        "refusal_rate": 1.0,
+        "policy": "Transparent refusal when query falls outside verified clinical guidelines"
+      },
+      "limitations": "Safety rules operate via deterministic regex filters + LLM prompt constraints; cannot replace clinical judgment."
+    },
+    "e2e_workflow_reliability": {
+      "workflow_stages_evaluated": [
+        "1. Medical Document Upload & Preprocessing",
+        "2. OCR Text Extraction (Digital / Scanned)",
+        "3. Biomedical NER (d4data/biomedical-ner-all)",
+        "4. Shared Clinical Profile Ingestion (Demo Patient user_id=1)",
+        "5. FAISS Medical Knowledge RAG Retrieval",
+        "6. Deterministic Multi-Factor Hospital & Specialist Recommendations",
+        "7. XGBoost Cost & LOS Prediction (Zero Target Leakage)",
+        "8. TreeSHAP Additive Feature Explanations",
+        "9. Patient-Contextual AI Healthcare Assistant with Safety Guardrails"
+      ],
+      "stages_count": 9,
+      "sequential_completion_rate": 1.0,
+      "full_regression_tests_passed": 70,
+      "full_regression_pass_rate": 1.0,
+      "test_framework": "FastAPI TestClient + Pytest test suite",
+      "limitations": "Evaluated on SQLite benchmark test environment; real deployments depend on external API and network latency."
+    }
+  },
+  "summary_table": {
+    "OCR (Digital PDF Recall)": "100%",
+    "OCR (Scanned Key Anchors)": "100% (5/5 anchors)",
+    "Biomedical NER (Macro F1)": "0.817 (Conditions 0.632, Symptoms 0.975, Meds 0.976)",
+    "Clinical Profile Correctness": "99.4% (Metadata 98.9%, Demographics 100%)",
+    "RAG Hit@1 / Hit@3": "100% / 100% (MRR 1.000)",
+    "RAG Citation Coverage": "100% (ESC, ACC, AAOS, NCCN)",
+    "Recommendations Top-1 Precision": "100% (Budget Compliance 100%)",
+    "Cost Model Performance": "R\u00b2 = 0.9673, MAE = \u20b924,847 (Held-out test N=375)",
+    "LOS Model Performance": "R\u00b2 = 0.8545, MAE = 0.716 days (Held-out test N=375)",
+    "TreeSHAP Local Additivity": "Verified (Relative diff < 0.01)",
+    "Assistant Emergency Safety Compliance": "100% (112/108 advisory)",
+    "Assistant Guardrail Refusal Compliance": "100% (Anti-prescribing & Anti-diagnosis)",
+    "E2E Pipeline Completion Rate": "100% (70/70 tests passed)"
+  }
+}

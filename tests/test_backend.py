@@ -20,10 +20,48 @@ from ai.astar_navigation import astar_navigator
 from ai.translator import medical_translator
 
 def test_ocr_extraction():
-    dummy_bytes = b"Cardiology Report LAD 85% Stenosis"
-    extracted = ocr_engine.extract_text(dummy_bytes, "Cardiology_Angiography.pdf")
-    assert isinstance(extracted, str)
-    assert len(extracted) > 20
+    # 1. Test genuine digital text PDF
+    pdf_bytes = b"""%PDF-1.4
+1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj
+2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj
+3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >> endobj
+4 0 obj << /Length 135 >> stream
+BT
+/F1 12 Tf
+72 712 Td
+(Patient Name: John Doe) Tj
+0 -18 Td
+(Diagnosis: Acute Bronchitis) Tj
+0 -18 Td
+(Prescription: Amoxicillin 500mg TDS) Tj
+ET
+endstream endobj
+5 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000244 00000 n 
+0000000431 00000 n 
+trailer << /Size 6 /Root 1 0 R >>
+startxref
+508
+%%EOF"""
+    extracted_pdf = ocr_engine.extract_text(pdf_bytes, "Pulmonology_Bronchitis.pdf")
+    assert isinstance(extracted_pdf, str)
+    assert "Bronchitis" in extracted_pdf
+    assert "John Doe" in extracted_pdf
+
+    # 2. Test genuine scanned image OCR
+    webp_path = os.path.join(BACKEND_DIR, "uploads", "1.webp")
+    if os.path.exists(webp_path):
+        with open(webp_path, "rb") as f:
+            img_bytes = f.read()
+        extracted_img = ocr_engine.extract_text(img_bytes, "1.webp")
+        assert len(extracted_img) > 20
+        assert any(k in extracted_img for k in ["JAGNYASENI", "HOSPITAL", "TICKET", "PATEL", "OPD", "BARSHARANI"])
 
 def test_clinical_bert_entity_extraction():
     text = "Patient presents with exertional angina and LAD 85% proximal stenosis. Advised Percutaneous Coronary Intervention with Aspirin 75mg."

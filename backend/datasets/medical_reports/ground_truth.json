@@ -1,0 +1,1863 @@
+[
+  {
+    "id": 1,
+    "filename": "report_01_cardio_angiogram.pdf",
+    "format": "digital_pdf",
+    "specialty_domain": "Cardiology",
+    "metadata": {
+      "patient_name": "Ramesh Gupta",
+      "patient_id": "MRN-CRD-8821",
+      "report_date": "14/08/2025"
+    },
+    "demographics": {
+      "age": 58,
+      "gender": "Male"
+    },
+    "conditions": [
+      "Double Vessel Coronary Artery Disease",
+      "Angina Pectoris"
+    ],
+    "symptoms": [
+      "exertional angina",
+      "chest pain",
+      "shortness of breath"
+    ],
+    "tests": [
+      "Coronary Angiography",
+      "2D Echocardiogram",
+      "Electrocardiogram"
+    ],
+    "test_results": [
+      {
+        "test_name": "LAD Stenosis",
+        "value": "85%",
+        "unit": "%",
+        "reference_range": "< 50%",
+        "status": "Critical"
+      },
+      {
+        "test_name": "RCA Stenosis",
+        "value": "75%",
+        "unit": "%",
+        "reference_range": "< 50%",
+        "status": "Critical"
+      },
+      {
+        "test_name": "LVEF",
+        "value": "52%",
+        "unit": "%",
+        "reference_range": "50% - 70%",
+        "status": "Normal"
+      },
+      {
+        "test_name": "Blood Pressure",
+        "value": "142/88",
+        "unit": "mmHg",
+        "reference_range": "90/60 - 120/80 mmHg",
+        "status": "High"
+      }
+    ],
+    "medications": [
+      "Aspirin 75mg OD",
+      "Atorvastatin 40mg HS",
+      "Metoprolol 25mg BD"
+    ],
+    "procedures": [
+      "Coronary Angiography",
+      "Percutaneous Coronary Intervention"
+    ],
+    "medical_history": [
+      "Known case of hypertension for 6 years",
+      "Past smoker"
+    ],
+    "has_table": true
+  },
+  {
+    "id": 2,
+    "filename": "report_02_cardio_cad_echo.pdf",
+    "format": "digital_pdf",
+    "specialty_domain": "Cardiology",
+    "metadata": {
+      "patient_name": "Sunita Verma",
+      "patient_id": "MRN-CRD-3190",
+      "report_date": "22/07/2025"
+    },
+    "demographics": {
+      "age": 62,
+      "gender": "Female"
+    },
+    "conditions": [
+      "Coronary Artery Disease",
+      "Dyslipidemia"
+    ],
+    "symptoms": [
+      "chest pain",
+      "palpitations",
+      "fatigue"
+    ],
+    "tests": [
+      "2D Echocardiogram",
+      "Lipid Profile"
+    ],
+    "test_results": [
+      {
+        "test_name": "LVEF",
+        "value": "48%",
+        "unit": "%",
+        "reference_range": "50% - 70%",
+        "status": "Low"
+      },
+      {
+        "test_name": "Total Cholesterol",
+        "value": "245",
+        "unit": "mg/dL",
+        "reference_range": "<200",
+        "status": "High"
+      },
+      {
+        "test_name": "Serum Creatinine",
+        "value": "0.9",
+        "unit": "mg/dL",
+        "reference_range": "0.7 - 1.3 mg/dL",
+        "status": "Normal"
+      }
+    ],
+    "medications": [
+      "Rosuvastatin 20mg HS",
+      "Amlodipine 5mg OD"
+    ],
+    "procedures": [
+      "Echocardiogram"
+    ],
+    "medical_history": [
+      "Known case of Type 2 Diabetes Mellitus x 4 years"
+    ],
+    "has_table": true
+  },
+  {
+    "id": 3,
+    "filename": "report_03_cardio_stemi_scanned.pdf",
+    "format": "scanned_pdf",
+    "specialty_domain": "Cardiology",
+    "metadata": {
+      "patient_name": "Vikram Patel",
+      "patient_id": "MRN-CRD-7704",
+      "report_date": "05/09/2025"
+    },
+    "demographics": {
+      "age": 51,
+      "gender": "Male"
+    },
+    "conditions": [
+      "Myocardial Infarction",
+      "Hypertension"
+    ],
+    "symptoms": [
+      "chest pain",
+      "dyspnea",
+      "vomiting"
+    ],
+    "tests": [
+      "ECG",
+      "Coronary Angiography"
+    ],
+    "test_results": [
+      {
+        "test_name": "Blood Pressure",
+        "value": "158/96",
+        "unit": "mmHg",
+        "reference_range": "90/60 - 120/80 mmHg",
+        "status": "High"
+      },
+      {
+        "test_name": "LVEF",
+        "value": "42%",
+        "unit": "%",
+        "reference_range": "50% - 70%",
+        "status": "Low"
+      }
+    ],
+    "medications": [
+      "Ticagrelor 90mg BD",
+      "Aspirin 75mg OD",
+      "Pantoprazole 40mg OD"
+    ],
+    "procedures": [
+      "Percutaneous Coronary Intervention",
+      "Angioplasty"
+    ],
+    "medical_history": [
+      "History of hypertension",
+      "Past smoker"
+    ],
+    "has_table": false
+  },
+  {
+    "id": 4,
+    "filename": "report_04_cardio_angina_table.png",
+    "format": "image_png",
+    "specialty_domain": "Cardiology",
+    "metadata": {
+      "patient_name": "Rajesh Nair",
+      "patient_id": "MRN-CRD-5021",
+      "report_date": "18/06/2025"
+    },
+    "demographics": {
+      "age": 65,
+      "gender": "Male"
+    },
+    "conditions": [
+      "Coronary Artery Disease",
+      "Hyperlipidemia"
+    ],
+    "symptoms": [
+      "exertional angina",
+      "breathlessness"
+    ],
+    "tests": [
+      "Complete Blood Count",
+      "Lipid Profile",
+      "ECG"
+    ],
+    "test_results": [
+      {
+        "test_name": "Total Cholesterol",
+        "value": "260",
+        "unit": "mg/dL",
+        "reference_range": "<200",
+        "status": "High"
+      },
+      {
+        "test_name": "Blood Pressure",
+        "value": "138/86",
+        "unit": "mmHg",
+        "reference_range": "90/60 - 120/80 mmHg",
+        "status": "Normal"
+      },
+      {
+        "test_name": "Hemoglobin",
+        "value": "14.2",
+        "unit": "g/dL",
+        "reference_range": "13.0 - 17.5 g/dL",
+        "status": "Normal"
+      }
+    ],
+    "medications": [
+      "Atorvastatin 20mg HS",
+      "Metoprolol 50mg OD"
+    ],
+    "procedures": [
+      "Electrocardiogram"
+    ],
+    "medical_history": [
+      "K/C/O Hypertension x 8 years"
+    ],
+    "has_table": true
+  },
+  {
+    "id": 5,
+    "filename": "report_05_cardio_triple_vessel.pdf",
+    "format": "digital_pdf",
+    "specialty_domain": "Cardiology",
+    "metadata": {
+      "patient_name": "Kishore Kumar",
+      "patient_id": "MRN-CRD-1192",
+      "report_date": "02/08/2025"
+    },
+    "demographics": {
+      "age": 69,
+      "gender": "Male"
+    },
+    "conditions": [
+      "Triple Vessel Disease",
+      "Coronary Artery Disease"
+    ],
+    "symptoms": [
+      "chest pain",
+      "shortness of breath",
+      "fatigue"
+    ],
+    "tests": [
+      "Coronary Angiography",
+      "2D Echocardiogram"
+    ],
+    "test_results": [
+      {
+        "test_name": "LAD Stenosis",
+        "value": "90%",
+        "unit": "%",
+        "reference_range": "< 50%",
+        "status": "Critical"
+      },
+      {
+        "test_name": "RCA Stenosis",
+        "value": "80%",
+        "unit": "%",
+        "reference_range": "< 50%",
+        "status": "Critical"
+      },
+      {
+        "test_name": "LCx Stenosis",
+        "value": "70%",
+        "unit": "%",
+        "reference_range": "< 50%",
+        "status": "Critical"
+      },
+      {
+        "test_name": "LVEF",
+        "value": "44%",
+        "unit": "%",
+        "reference_range": "50% - 70%",
+        "status": "Low"
+      }
+    ],
+    "medications": [
+      "Clopidogrel 75mg OD",
+      "Atorvastatin 40mg HS",
+      "Aspirin 75mg OD"
+    ],
+    "procedures": [
+      "Coronary Artery Bypass Grafting",
+      "CABG"
+    ],
+    "medical_history": [
+      "Known diabetic x 12 years",
+      "Known hypertensive"
+    ],
+    "has_table": true
+  },
+  {
+    "id": 6,
+    "filename": "report_06_neuro_meningioma_mri.pdf",
+    "format": "digital_pdf",
+    "specialty_domain": "Neurology",
+    "metadata": {
+      "patient_name": "Pooja Sharma",
+      "patient_id": "MRN-NEU-4412",
+      "report_date": "19/07/2025"
+    },
+    "demographics": {
+      "age": 46,
+      "gender": "Female"
+    },
+    "conditions": [
+      "Meningioma",
+      "Cerebral Edema"
+    ],
+    "symptoms": [
+      "headache",
+      "motor weakness",
+      "dizziness"
+    ],
+    "tests": [
+      "MRI Brain",
+      "CT Scan"
+    ],
+    "test_results": [
+      {
+        "test_name": "Blood Pressure",
+        "value": "124/80",
+        "unit": "mmHg",
+        "reference_range": "90/60 - 120/80 mmHg",
+        "status": "Normal"
+      },
+      {
+        "test_name": "Serum Creatinine",
+        "value": "0.8",
+        "unit": "mg/dL",
+        "reference_range": "0.7 - 1.3 mg/dL",
+        "status": "Normal"
+      }
+    ],
+    "medications": [
+      "Levetiracetam 500mg BD",
+      "Pantoprazole 40mg OD"
+    ],
+    "procedures": [
+      "Craniotomy",
+      "Tumor Excision"
+    ],
+    "medical_history": [
+      "Presenting since 6 months",
+      "No known chronic illnesses"
+    ],
+    "has_table": false
+  },
+  {
+    "id": 7,
+    "filename": "report_07_neuro_ischemic_stroke_scanned.pdf",
+    "format": "scanned_pdf",
+    "specialty_domain": "Neurology",
+    "metadata": {
+      "patient_name": "Anil Deshmukh",
+      "patient_id": "MRN-NEU-9021",
+      "report_date": "11/08/2025"
+    },
+    "demographics": {
+      "age": 64,
+      "gender": "Male"
+    },
+    "conditions": [
+      "Hypertension",
+      "Atherosclerosis"
+    ],
+    "symptoms": [
+      "motor weakness",
+      "headache",
+      "dizziness"
+    ],
+    "tests": [
+      "CT Scan",
+      "MRI Brain"
+    ],
+    "test_results": [
+      {
+        "test_name": "Blood Pressure",
+        "value": "164/98",
+        "unit": "mmHg",
+        "reference_range": "90/60 - 120/80 mmHg",
+        "status": "High"
+      },
+      {
+        "test_name": "Fasting Blood Sugar",
+        "value": "136",
+        "unit": "mg/dL",
+        "reference_range": "70 - 99 mg/dL",
+        "status": "High"
+      }
+    ],
+    "medications": [
+      "Aspirin 75mg OD",
+      "Atorvastatin 40mg HS",
+      "Telmisartan 40mg OD"
+    ],
+    "procedures": [
+      "Computed Tomography"
+    ],
+    "medical_history": [
+      "Known hypertensive for 10 years",
+      "Known diabetic"
+    ],
+    "has_table": false
+  },
+  {
+    "id": 8,
+    "filename": "report_08_neuro_glioma_histopath.pdf",
+    "format": "digital_pdf",
+    "specialty_domain": "Neurology",
+    "metadata": {
+      "patient_name": "Deepak Mehta",
+      "patient_id": "MRN-NEU-6124",
+      "report_date": "29/06/2025"
+    },
+    "demographics": {
+      "age": 52,
+      "gender": "Male"
+    },
+    "conditions": [
+      "Glioma",
+      "Astrocytoma"
+    ],
+    "symptoms": [
+      "headache",
+      "seizures",
+      "vomiting"
+    ],
+    "tests": [
+      "MRI Brain",
+      "Histopathology Report",
+      "Biopsy"
+    ],
+    "test_results": [
+      {
+        "test_name": "Hemoglobin",
+        "value": "13.6",
+        "unit": "g/dL",
+        "reference_range": "13.0 - 17.5 g/dL",
+        "status": "Normal"
+      },
+      {
+        "test_name": "Platelet Count",
+        "value": "240,000",
+        "unit": "/mcL",
+        "reference_range": "150,000 - 450,000 /mcL",
+        "status": "Normal"
+      }
+    ],
+    "medications": [
+      "Levetiracetam 500mg BD",
+      "Tramadol 50mg PRN"
+    ],
+    "procedures": [
+      "Craniotomy",
+      "Biopsy"
+    ],
+    "medical_history": [
+      "History of headache since 4 months"
+    ],
+    "has_table": true
+  },
+  {
+    "id": 9,
+    "filename": "report_09_neuro_seizure_eeg.png",
+    "format": "image_png",
+    "specialty_domain": "Neurology",
+    "metadata": {
+      "patient_name": "Kavita Rao",
+      "patient_id": "MRN-NEU-2287",
+      "report_date": "15/07/2025"
+    },
+    "demographics": {
+      "age": 34,
+      "gender": "Female"
+    },
+    "conditions": [
+      "Vasogenic Edema"
+    ],
+    "symptoms": [
+      "headache",
+      "dizziness",
+      "lethargy"
+    ],
+    "tests": [
+      "MRI Brain",
+      "Electrocardiogram"
+    ],
+    "test_results": [
+      {
+        "test_name": "Blood Pressure",
+        "value": "118/76",
+        "unit": "mmHg",
+        "reference_range": "90/60 - 120/80 mmHg",
+        "status": "Normal"
+      },
+      {
+        "test_name": "Serum Creatinine",
+        "value": "0.7",
+        "unit": "mg/dL",
+        "reference_range": "0.7 - 1.3 mg/dL",
+        "status": "Normal"
+      }
+    ],
+    "medications": [
+      "Levetiracetam 500mg BD",
+      "Pantoprazole 40mg OD"
+    ],
+    "procedures": [
+      "MRI Brain"
+    ],
+    "medical_history": [
+      "Known case of migraine for 3 years"
+    ],
+    "has_table": false
+  },
+  {
+    "id": 10,
+    "filename": "report_10_ortho_knee_osteoarthritis.pdf",
+    "format": "digital_pdf",
+    "specialty_domain": "Orthopedics",
+    "metadata": {
+      "patient_name": "Shashi Kapoor",
+      "patient_id": "MRN-ORT-1982",
+      "report_date": "08/08/2025"
+    },
+    "demographics": {
+      "age": 66,
+      "gender": "Female"
+    },
+    "conditions": [
+      "Osteoarthritis",
+      "Arthritis"
+    ],
+    "symptoms": [
+      "knee pain",
+      "joint stiffness",
+      "antalgic gait"
+    ],
+    "tests": [
+      "X-Ray Knee",
+      "Complete Blood Count"
+    ],
+    "test_results": [
+      {
+        "test_name": "ESR",
+        "value": "24",
+        "unit": "mm/hr",
+        "reference_range": "0 - 20 mm/hr",
+        "status": "High"
+      },
+      {
+        "test_name": "Uric Acid",
+        "value": "5.4",
+        "unit": "mg/dL",
+        "reference_range": "2.4 - 6.0 mg/dL",
+        "status": "Normal"
+      },
+      {
+        "test_name": "Blood Pressure",
+        "value": "130/84",
+        "unit": "mmHg",
+        "reference_range": "90/60 - 120/80 mmHg",
+        "status": "Normal"
+      }
+    ],
+    "medications": [
+      "Paracetamol 650mg TDS",
+      "Diclofenac 50mg BD",
+      "Pantoprazole 40mg OD"
+    ],
+    "procedures": [
+      "Total Knee Arthroplasty",
+      "TKA"
+    ],
+    "medical_history": [
+      "Duration: 5 years",
+      "Known diabetic x 6 years"
+    ],
+    "has_table": true
+  },
+  {
+    "id": 11,
+    "filename": "report_11_ortho_lumbar_spondylosis_scanned.pdf",
+    "format": "scanned_pdf",
+    "specialty_domain": "Orthopedics",
+    "metadata": {
+      "patient_name": "Gopal Sharma",
+      "patient_id": "MRN-ORT-4890",
+      "report_date": "25/08/2025"
+    },
+    "demographics": {
+      "age": 57,
+      "gender": "Male"
+    },
+    "conditions": [
+      "Spondylosis",
+      "Radiculopathy"
+    ],
+    "symptoms": [
+      "joint stiffness",
+      "fatigue",
+      "motor weakness"
+    ],
+    "tests": [
+      "MRI Spine",
+      "X-Ray Spine"
+    ],
+    "test_results": [
+      {
+        "test_name": "Blood Pressure",
+        "value": "134/86",
+        "unit": "mmHg",
+        "reference_range": "90/60 - 120/80 mmHg",
+        "status": "Normal"
+      },
+      {
+        "test_name": "Hemoglobin",
+        "value": "14.0",
+        "unit": "g/dL",
+        "reference_range": "13.0 - 17.5 g/dL",
+        "status": "Normal"
+      }
+    ],
+    "medications": [
+      "Tramadol 50mg BD",
+      "Paracetamol 500mg TDS"
+    ],
+    "procedures": [
+      "MRI Spine"
+    ],
+    "medical_history": [
+      "K/C/O Hypertension x 3 years"
+    ],
+    "has_table": false
+  },
+  {
+    "id": 12,
+    "filename": "report_12_ortho_hip_fracture.pdf",
+    "format": "digital_pdf",
+    "specialty_domain": "Orthopedics",
+    "metadata": {
+      "patient_name": "Kamla Devi",
+      "patient_id": "MRN-ORT-7119",
+      "report_date": "04/09/2025"
+    },
+    "demographics": {
+      "age": 73,
+      "gender": "Female"
+    },
+    "conditions": [
+      "Osteoarthritis",
+      "Hypertension"
+    ],
+    "symptoms": [
+      "joint pain",
+      "antalgic gait"
+    ],
+    "tests": [
+      "X-Ray Pelvis",
+      "Complete Blood Count"
+    ],
+    "test_results": [
+      {
+        "test_name": "Hemoglobin",
+        "value": "11.8",
+        "unit": "g/dL",
+        "reference_range": "12.0 - 15.5 g/dL",
+        "status": "Low"
+      },
+      {
+        "test_name": "Platelet Count",
+        "value": "210,000",
+        "unit": "/mcL",
+        "reference_range": "150,000 - 450,000 /mcL",
+        "status": "Normal"
+      }
+    ],
+    "medications": [
+      "Tramadol 50mg BD",
+      "Paracetamol 650mg TDS"
+    ],
+    "procedures": [
+      "Total Hip Arthroplasty",
+      "THA"
+    ],
+    "medical_history": [
+      "Known hypertensive for 12 years",
+      "Known diabetic"
+    ],
+    "has_table": true
+  },
+  {
+    "id": 13,
+    "filename": "report_13_ortho_knee_replacement_table.png",
+    "format": "image_png",
+    "specialty_domain": "Orthopedics",
+    "metadata": {
+      "patient_name": "Brijesh Prasad",
+      "patient_id": "MRN-ORT-9302",
+      "report_date": "17/07/2025"
+    },
+    "demographics": {
+      "age": 61,
+      "gender": "Male"
+    },
+    "conditions": [
+      "Osteoarthritis"
+    ],
+    "symptoms": [
+      "knee pain",
+      "joint stiffness",
+      "gait disturbance"
+    ],
+    "tests": [
+      "X-Ray Knee",
+      "Lipid Profile"
+    ],
+    "test_results": [
+      {
+        "test_name": "Blood Pressure",
+        "value": "136/82",
+        "unit": "mmHg",
+        "reference_range": "90/60 - 120/80 mmHg",
+        "status": "Normal"
+      },
+      {
+        "test_name": "Fasting Blood Sugar",
+        "value": "112",
+        "unit": "mg/dL",
+        "reference_range": "70 - 99 mg/dL",
+        "status": "High"
+      },
+      {
+        "test_name": "Serum Creatinine",
+        "value": "1.0",
+        "unit": "mg/dL",
+        "reference_range": "0.7 - 1.3 mg/dL",
+        "status": "Normal"
+      }
+    ],
+    "medications": [
+      "Diclofenac 50mg BD",
+      "Pantoprazole 40mg OD"
+    ],
+    "procedures": [
+      "Total Knee Arthroplasty",
+      "Knee Replacement"
+    ],
+    "medical_history": [
+      "Known case of hypertension for 4 years"
+    ],
+    "has_table": true
+  },
+  {
+    "id": 14,
+    "filename": "report_14_oncol_colon_carcinoma.pdf",
+    "format": "digital_pdf",
+    "specialty_domain": "Oncology",
+    "metadata": {
+      "patient_name": "Manohar Joshi",
+      "patient_id": "MRN-ONC-8810",
+      "report_date": "27/07/2025"
+    },
+    "demographics": {
+      "age": 60,
+      "gender": "Male"
+    },
+    "conditions": [
+      "Carcinoma",
+      "Malignancy"
+    ],
+    "symptoms": [
+      "fatigue",
+      "nausea",
+      "malaise"
+    ],
+    "tests": [
+      "Colonoscopy",
+      "Biopsy",
+      "CT Abdomen"
+    ],
+    "test_results": [
+      {
+        "test_name": "Hemoglobin",
+        "value": "10.2",
+        "unit": "g/dL",
+        "reference_range": "13.0 - 17.5 g/dL",
+        "status": "Low"
+      },
+      {
+        "test_name": "CEA Marker",
+        "value": "18.4",
+        "unit": "ng/mL",
+        "reference_range": "< 3.0 ng/mL",
+        "status": "High"
+      },
+      {
+        "test_name": "Serum Creatinine",
+        "value": "1.1",
+        "unit": "mg/dL",
+        "reference_range": "0.7 - 1.3 mg/dL",
+        "status": "Normal"
+      }
+    ],
+    "medications": [
+      "Pantoprazole 40mg OD",
+      "Tramadol 50mg PRN"
+    ],
+    "procedures": [
+      "Colonoscopy",
+      "Biopsy"
+    ],
+    "medical_history": [
+      "Known hypertensive for 5 years",
+      "Past smoker"
+    ],
+    "has_table": true
+  },
+  {
+    "id": 15,
+    "filename": "report_15_oncol_breast_carcinoma_table.pdf",
+    "format": "digital_pdf",
+    "specialty_domain": "Oncology",
+    "metadata": {
+      "patient_name": "Meena Saxena",
+      "patient_id": "MRN-ONC-3912",
+      "report_date": "14/08/2025"
+    },
+    "demographics": {
+      "age": 54,
+      "gender": "Female"
+    },
+    "conditions": [
+      "Carcinoma",
+      "Neoplasm"
+    ],
+    "symptoms": [
+      "fatigue",
+      "malaise"
+    ],
+    "tests": [
+      "Histopathology Report",
+      "Biopsy",
+      "Complete Blood Count"
+    ],
+    "test_results": [
+      {
+        "test_name": "Hemoglobin",
+        "value": "12.4",
+        "unit": "g/dL",
+        "reference_range": "12.0 - 15.5 g/dL",
+        "status": "Normal"
+      },
+      {
+        "test_name": "Platelet Count",
+        "value": "260,000",
+        "unit": "/mcL",
+        "reference_range": "150,000 - 450,000 /mcL",
+        "status": "Normal"
+      },
+      {
+        "test_name": "Blood Pressure",
+        "value": "122/78",
+        "unit": "mmHg",
+        "reference_range": "90/60 - 120/80 mmHg",
+        "status": "Normal"
+      }
+    ],
+    "medications": [
+      "Pantoprazole 40mg OD",
+      "Paracetamol 500mg PRN"
+    ],
+    "procedures": [
+      "Biopsy"
+    ],
+    "medical_history": [
+      "Presenting since 3 months",
+      "No prior surgical history"
+    ],
+    "has_table": true
+  },
+  {
+    "id": 16,
+    "filename": "report_16_oncol_lung_neoplasm_scanned.pdf",
+    "format": "scanned_pdf",
+    "specialty_domain": "Oncology",
+    "metadata": {
+      "patient_name": "Suresh Trivedi",
+      "patient_id": "MRN-ONC-5520",
+      "report_date": "03/09/2025"
+    },
+    "demographics": {
+      "age": 68,
+      "gender": "Male"
+    },
+    "conditions": [
+      "Neoplasm",
+      "COPD"
+    ],
+    "symptoms": [
+      "cough",
+      "shortness of breath",
+      "fatigue",
+      "hemoptysis"
+    ],
+    "tests": [
+      "CT Chest",
+      "Biopsy"
+    ],
+    "test_results": [
+      {
+        "test_name": "Hemoglobin",
+        "value": "12.1",
+        "unit": "g/dL",
+        "reference_range": "13.0 - 17.5 g/dL",
+        "status": "Low"
+      },
+      {
+        "test_name": "Blood Pressure",
+        "value": "144/88",
+        "unit": "mmHg",
+        "reference_range": "90/60 - 120/80 mmHg",
+        "status": "High"
+      }
+    ],
+    "medications": [
+      "Azithromycin 500mg OD",
+      "Pantoprazole 40mg OD"
+    ],
+    "procedures": [
+      "Biopsy",
+      "Computed Tomography"
+    ],
+    "medical_history": [
+      "Past smoker x 30 years",
+      "Known hypertensive"
+    ],
+    "has_table": false
+  },
+  {
+    "id": 17,
+    "filename": "report_17_oncol_adenoma_biopsy.png",
+    "format": "image_png",
+    "specialty_domain": "Oncology",
+    "metadata": {
+      "patient_name": "Nandita Iyer",
+      "patient_id": "MRN-ONC-7741",
+      "report_date": "12/06/2025"
+    },
+    "demographics": {
+      "age": 49,
+      "gender": "Female"
+    },
+    "conditions": [
+      "Adenoma"
+    ],
+    "symptoms": [
+      "nausea",
+      "fatigue"
+    ],
+    "tests": [
+      "Histopathology Examination",
+      "Biopsy"
+    ],
+    "test_results": [
+      {
+        "test_name": "Blood Pressure",
+        "value": "126/80",
+        "unit": "mmHg",
+        "reference_range": "90/60 - 120/80 mmHg",
+        "status": "Normal"
+      },
+      {
+        "test_name": "Serum Creatinine",
+        "value": "0.8",
+        "unit": "mg/dL",
+        "reference_range": "0.7 - 1.3 mg/dL",
+        "status": "Normal"
+      }
+    ],
+    "medications": [
+      "Omeprazole 20mg OD",
+      "Paracetamol 500mg PRN"
+    ],
+    "procedures": [
+      "Biopsy"
+    ],
+    "medical_history": [
+      "Known case of hypothyroidism"
+    ],
+    "has_table": false
+  },
+  {
+    "id": 18,
+    "filename": "report_18_gastro_cholelithiasis.pdf",
+    "format": "digital_pdf",
+    "specialty_domain": "Gastroenterology",
+    "metadata": {
+      "patient_name": "Vandana Kulkarni",
+      "patient_id": "MRN-GAS-2109",
+      "report_date": "20/08/2025"
+    },
+    "demographics": {
+      "age": 43,
+      "gender": "Female"
+    },
+    "conditions": [
+      "Cholelithiasis",
+      "Cholecystitis"
+    ],
+    "symptoms": [
+      "nausea",
+      "vomiting",
+      "fever"
+    ],
+    "tests": [
+      "Ultrasound Abdomen",
+      "Liver Function Test"
+    ],
+    "test_results": [
+      {
+        "test_name": "Total Bilirubin",
+        "value": "1.8",
+        "unit": "mg/dL",
+        "reference_range": "0.2 - 1.2 mg/dL",
+        "status": "High"
+      },
+      {
+        "test_name": "SGPT / ALT",
+        "value": "64",
+        "unit": "U/L",
+        "reference_range": "7 - 56 U/L",
+        "status": "High"
+      },
+      {
+        "test_name": "WBC Count",
+        "value": "12,400",
+        "unit": "/mcL",
+        "reference_range": "4,500 - 11,000 /mcL",
+        "status": "High"
+      },
+      {
+        "test_name": "Blood Pressure",
+        "value": "120/78",
+        "unit": "mmHg",
+        "reference_range": "90/60 - 120/80 mmHg",
+        "status": "Normal"
+      }
+    ],
+    "medications": [
+      "Pantoprazole 40mg OD",
+      "Cefixime 200mg BD",
+      "Tramadol 50mg PRN"
+    ],
+    "procedures": [
+      "Cholecystectomy",
+      "Laparoscopy"
+    ],
+    "medical_history": [
+      "History of biliary colic since 3 months"
+    ],
+    "has_table": true
+  },
+  {
+    "id": 19,
+    "filename": "report_19_gastro_peptic_ulcer_scanned.pdf",
+    "format": "scanned_pdf",
+    "specialty_domain": "Gastroenterology",
+    "metadata": {
+      "patient_name": "Harish Rawat",
+      "patient_id": "MRN-GAS-6612",
+      "report_date": "06/09/2025"
+    },
+    "demographics": {
+      "age": 55,
+      "gender": "Male"
+    },
+    "conditions": [
+      "Hypertension"
+    ],
+    "symptoms": [
+      "nausea",
+      "vomiting",
+      "fatigue"
+    ],
+    "tests": [
+      "Upper GI Endoscopy",
+      "Complete Blood Count"
+    ],
+    "test_results": [
+      {
+        "test_name": "Hemoglobin",
+        "value": "11.4",
+        "unit": "g/dL",
+        "reference_range": "13.0 - 17.5 g/dL",
+        "status": "Low"
+      },
+      {
+        "test_name": "Blood Pressure",
+        "value": "138/86",
+        "unit": "mmHg",
+        "reference_range": "90/60 - 120/80 mmHg",
+        "status": "Normal"
+      }
+    ],
+    "medications": [
+      "Pantoprazole 40mg OD",
+      "Amoxicillin 500mg TDS"
+    ],
+    "procedures": [
+      "Endoscopy",
+      "Biopsy"
+    ],
+    "medical_history": [
+      "Known hypertensive for 4 years",
+      "Past smoker"
+    ],
+    "has_table": false
+  },
+  {
+    "id": 20,
+    "filename": "report_20_gastro_cholecystitis_table.pdf",
+    "format": "digital_pdf",
+    "specialty_domain": "Gastroenterology",
+    "metadata": {
+      "patient_name": "Rekha Agarwal",
+      "patient_id": "MRN-GAS-4491",
+      "report_date": "16/07/2025"
+    },
+    "demographics": {
+      "age": 48,
+      "gender": "Female"
+    },
+    "conditions": [
+      "Cholecystitis",
+      "Cholelithiasis"
+    ],
+    "symptoms": [
+      "nausea",
+      "vomiting",
+      "fever"
+    ],
+    "tests": [
+      "Ultrasound Abdomen",
+      "Complete Blood Count",
+      "LFT"
+    ],
+    "test_results": [
+      {
+        "test_name": "WBC Count",
+        "value": "13,200",
+        "unit": "/mcL",
+        "reference_range": "4,500 - 11,000 /mcL",
+        "status": "High"
+      },
+      {
+        "test_name": "Total Bilirubin",
+        "value": "1.4",
+        "unit": "mg/dL",
+        "reference_range": "0.2 - 1.2 mg/dL",
+        "status": "High"
+      },
+      {
+        "test_name": "Serum Creatinine",
+        "value": "0.9",
+        "unit": "mg/dL",
+        "reference_range": "0.7 - 1.3 mg/dL",
+        "status": "Normal"
+      }
+    ],
+    "medications": [
+      "Ciprofloxacin 500mg BD",
+      "Pantoprazole 40mg OD",
+      "Paracetamol 650mg TDS"
+    ],
+    "procedures": [
+      "Cholecystectomy"
+    ],
+    "medical_history": [
+      "Known diabetic x 5 years"
+    ],
+    "has_table": true
+  },
+  {
+    "id": 21,
+    "filename": "report_21_gastro_colonoscopy.png",
+    "format": "image_png",
+    "specialty_domain": "Gastroenterology",
+    "metadata": {
+      "patient_name": "Prakash Sen",
+      "patient_id": "MRN-GAS-9018",
+      "report_date": "28/06/2025"
+    },
+    "demographics": {
+      "age": 59,
+      "gender": "Male"
+    },
+    "conditions": [
+      "Hypertension"
+    ],
+    "symptoms": [
+      "fatigue",
+      "malaise"
+    ],
+    "tests": [
+      "Colonoscopy",
+      "Biopsy"
+    ],
+    "test_results": [
+      {
+        "test_name": "Hemoglobin",
+        "value": "13.8",
+        "unit": "g/dL",
+        "reference_range": "13.0 - 17.5 g/dL",
+        "status": "Normal"
+      },
+      {
+        "test_name": "Blood Pressure",
+        "value": "142/90",
+        "unit": "mmHg",
+        "reference_range": "90/60 - 120/80 mmHg",
+        "status": "High"
+      }
+    ],
+    "medications": [
+      "Amlodipine 5mg OD",
+      "Pantoprazole 40mg OD"
+    ],
+    "procedures": [
+      "Colonoscopy",
+      "Biopsy"
+    ],
+    "medical_history": [
+      "K/C/O Hypertension x 7 years"
+    ],
+    "has_table": false
+  },
+  {
+    "id": 22,
+    "filename": "report_22_pulmon_pneumonia.pdf",
+    "format": "digital_pdf",
+    "specialty_domain": "Pulmonology",
+    "metadata": {
+      "patient_name": "Dharmendra Singh",
+      "patient_id": "MRN-PUL-1845",
+      "report_date": "10/08/2025"
+    },
+    "demographics": {
+      "age": 63,
+      "gender": "Male"
+    },
+    "conditions": [
+      "Pneumonia",
+      "Hypertension"
+    ],
+    "symptoms": [
+      "cough",
+      "shortness of breath",
+      "fever",
+      "chills"
+    ],
+    "tests": [
+      "X-Ray Chest",
+      "Complete Blood Count"
+    ],
+    "test_results": [
+      {
+        "test_name": "WBC Count",
+        "value": "14,800",
+        "unit": "/mcL",
+        "reference_range": "4,500 - 11,000 /mcL",
+        "status": "High"
+      },
+      {
+        "test_name": "Blood Pressure",
+        "value": "132/84",
+        "unit": "mmHg",
+        "reference_range": "90/60 - 120/80 mmHg",
+        "status": "Normal"
+      },
+      {
+        "test_name": "Hemoglobin",
+        "value": "13.4",
+        "unit": "g/dL",
+        "reference_range": "13.0 - 17.5 g/dL",
+        "status": "Normal"
+      }
+    ],
+    "medications": [
+      "Azithromycin 500mg OD",
+      "Amoxicillin 500mg TDS",
+      "Paracetamol 650mg TDS"
+    ],
+    "procedures": [
+      "X-Ray Chest"
+    ],
+    "medical_history": [
+      "Known hypertensive for 6 years",
+      "Past smoker"
+    ],
+    "has_table": true
+  },
+  {
+    "id": 23,
+    "filename": "report_23_pulmon_copd_bronchitis_scanned.pdf",
+    "format": "scanned_pdf",
+    "specialty_domain": "Pulmonology",
+    "metadata": {
+      "patient_name": "Jagdish Chandra",
+      "patient_id": "MRN-PUL-7230",
+      "report_date": "24/08/2025"
+    },
+    "demographics": {
+      "age": 70,
+      "gender": "Male"
+    },
+    "conditions": [
+      "COPD",
+      "Bronchitis"
+    ],
+    "symptoms": [
+      "cough",
+      "dyspnea",
+      "breathlessness",
+      "fatigue"
+    ],
+    "tests": [
+      "Chest Radiograph",
+      "ECG"
+    ],
+    "test_results": [
+      {
+        "test_name": "Blood Pressure",
+        "value": "140/88",
+        "unit": "mmHg",
+        "reference_range": "90/60 - 120/80 mmHg",
+        "status": "High"
+      },
+      {
+        "test_name": "Serum Creatinine",
+        "value": "1.2",
+        "unit": "mg/dL",
+        "reference_range": "0.7 - 1.3 mg/dL",
+        "status": "Normal"
+      }
+    ],
+    "medications": [
+      "Azithromycin 500mg OD",
+      "Pantoprazole 40mg OD"
+    ],
+    "procedures": [
+      "Electrocardiogram"
+    ],
+    "medical_history": [
+      "Past smoker x 35 years",
+      "Known case of COPD"
+    ],
+    "has_table": false
+  },
+  {
+    "id": 24,
+    "filename": "report_24_pulmon_pleural_effusion.png",
+    "format": "image_png",
+    "specialty_domain": "Pulmonology",
+    "metadata": {
+      "patient_name": "Sarita Mukhopadhyay",
+      "patient_id": "MRN-PUL-3918",
+      "report_date": "19/07/2025"
+    },
+    "demographics": {
+      "age": 56,
+      "gender": "Female"
+    },
+    "conditions": [
+      "Pneumonia"
+    ],
+    "symptoms": [
+      "shortness of breath",
+      "cough",
+      "fever"
+    ],
+    "tests": [
+      "CT Chest",
+      "Complete Blood Count"
+    ],
+    "test_results": [
+      {
+        "test_name": "WBC Count",
+        "value": "12,100",
+        "unit": "/mcL",
+        "reference_range": "4,500 - 11,000 /mcL",
+        "status": "High"
+      },
+      {
+        "test_name": "Hemoglobin",
+        "value": "12.8",
+        "unit": "g/dL",
+        "reference_range": "12.0 - 15.5 g/dL",
+        "status": "Normal"
+      }
+    ],
+    "medications": [
+      "Cefixime 200mg BD",
+      "Paracetamol 500mg TDS"
+    ],
+    "procedures": [
+      "Computed Tomography"
+    ],
+    "medical_history": [
+      "Known diabetic x 4 years"
+    ],
+    "has_table": false
+  },
+  {
+    "id": 25,
+    "filename": "report_25_nephro_ckd_renal_failure.pdf",
+    "format": "digital_pdf",
+    "specialty_domain": "Nephrology",
+    "metadata": {
+      "patient_name": "Mahesh Bhatia",
+      "patient_id": "MRN-NEP-8102",
+      "report_date": "13/08/2025"
+    },
+    "demographics": {
+      "age": 67,
+      "gender": "Male"
+    },
+    "conditions": [
+      "Chronic Kidney Disease",
+      "Renal Failure",
+      "Hypertension"
+    ],
+    "symptoms": [
+      "fatigue",
+      "nausea",
+      "malaise"
+    ],
+    "tests": [
+      "Renal Function Test",
+      "Complete Blood Count",
+      "Ultrasound Abdomen"
+    ],
+    "test_results": [
+      {
+        "test_name": "Serum Creatinine",
+        "value": "2.8",
+        "unit": "mg/dL",
+        "reference_range": "0.7 - 1.3 mg/dL",
+        "status": "Critical"
+      },
+      {
+        "test_name": "Blood Urea",
+        "value": "68",
+        "unit": "mg/dL",
+        "reference_range": "15 - 45 mg/dL",
+        "status": "High"
+      },
+      {
+        "test_name": "Serum Potassium",
+        "value": "5.1",
+        "unit": "mEq/L",
+        "reference_range": "3.5 - 5.0 mEq/L",
+        "status": "High"
+      },
+      {
+        "test_name": "Hemoglobin",
+        "value": "10.4",
+        "unit": "g/dL",
+        "reference_range": "13.0 - 17.5 g/dL",
+        "status": "Low"
+      },
+      {
+        "test_name": "Blood Pressure",
+        "value": "152/94",
+        "unit": "mmHg",
+        "reference_range": "90/60 - 120/80 mmHg",
+        "status": "High"
+      }
+    ],
+    "medications": [
+      "Amlodipine 10mg OD",
+      "Telmisartan 40mg OD",
+      "Torsemide 10mg OD"
+    ],
+    "procedures": [
+      "Ultrasound Abdomen"
+    ],
+    "medical_history": [
+      "Known hypertensive for 14 years",
+      "Known diabetic x 10 years"
+    ],
+    "has_table": true
+  },
+  {
+    "id": 26,
+    "filename": "report_26_nephro_diabetic_nephropathy_scanned.pdf",
+    "format": "scanned_pdf",
+    "specialty_domain": "Nephrology",
+    "metadata": {
+      "patient_name": "Sultana Begum",
+      "patient_id": "MRN-NEP-4390",
+      "report_date": "30/08/2025"
+    },
+    "demographics": {
+      "age": 60,
+      "gender": "Female"
+    },
+    "conditions": [
+      "Chronic Kidney Disease",
+      "Type 2 Diabetes Mellitus"
+    ],
+    "symptoms": [
+      "fatigue",
+      "malaise"
+    ],
+    "tests": [
+      "Renal Function Test",
+      "HbA1c Test"
+    ],
+    "test_results": [
+      {
+        "test_name": "Serum Creatinine",
+        "value": "1.9",
+        "unit": "mg/dL",
+        "reference_range": "0.7 - 1.3 mg/dL",
+        "status": "High"
+      },
+      {
+        "test_name": "HbA1c",
+        "value": "8.8",
+        "unit": "%",
+        "reference_range": "< 5.7%",
+        "status": "High"
+      },
+      {
+        "test_name": "Blood Pressure",
+        "value": "148/90",
+        "unit": "mmHg",
+        "reference_range": "90/60 - 120/80 mmHg",
+        "status": "High"
+      }
+    ],
+    "medications": [
+      "Insulin 20IU BD",
+      "Telmisartan 40mg OD",
+      "Pantoprazole 40mg OD"
+    ],
+    "procedures": [
+      "Renal Function Test"
+    ],
+    "medical_history": [
+      "Known case of Type 2 Diabetes Mellitus x 15 years",
+      "Known hypertensive"
+    ],
+    "has_table": false
+  },
+  {
+    "id": 27,
+    "filename": "report_27_nephro_hypertensive_nephrosclerosis.png",
+    "format": "image_png",
+    "specialty_domain": "Nephrology",
+    "metadata": {
+      "patient_name": "Devendra Pandey",
+      "patient_id": "MRN-NEP-6014",
+      "report_date": "18/06/2025"
+    },
+    "demographics": {
+      "age": 58,
+      "gender": "Male"
+    },
+    "conditions": [
+      "Hypertension",
+      "Renal Failure"
+    ],
+    "symptoms": [
+      "fatigue",
+      "headache",
+      "dizziness"
+    ],
+    "tests": [
+      "RFT",
+      "Lipid Profile"
+    ],
+    "test_results": [
+      {
+        "test_name": "Serum Creatinine",
+        "value": "1.7",
+        "unit": "mg/dL",
+        "reference_range": "0.7 - 1.3 mg/dL",
+        "status": "High"
+      },
+      {
+        "test_name": "Blood Pressure",
+        "value": "160/100",
+        "unit": "mmHg",
+        "reference_range": "90/60 - 120/80 mmHg",
+        "status": "High"
+      },
+      {
+        "test_name": "Serum Potassium",
+        "value": "4.6",
+        "unit": "mEq/L",
+        "reference_range": "3.5 - 5.0 mEq/L",
+        "status": "Normal"
+      }
+    ],
+    "medications": [
+      "Amlodipine 5mg OD",
+      "Losartan 50mg OD"
+    ],
+    "procedures": [
+      "Renal Function Test"
+    ],
+    "medical_history": [
+      "Known hypertensive for 8 years"
+    ],
+    "has_table": true
+  },
+  {
+    "id": 28,
+    "filename": "report_28_genmed_t2dm_hba1c_table.pdf",
+    "format": "digital_pdf",
+    "specialty_domain": "General Medicine",
+    "metadata": {
+      "patient_name": "Ashok Aggarwal",
+      "patient_id": "MRN-GEN-1029",
+      "report_date": "15/08/2025"
+    },
+    "demographics": {
+      "age": 53,
+      "gender": "Male"
+    },
+    "conditions": [
+      "Type 2 Diabetes Mellitus",
+      "Dyslipidemia",
+      "Hypertension"
+    ],
+    "symptoms": [
+      "fatigue",
+      "malaise"
+    ],
+    "tests": [
+      "HbA1c Test",
+      "Lipid Profile",
+      "Complete Blood Count"
+    ],
+    "test_results": [
+      {
+        "test_name": "HbA1c",
+        "value": "9.2",
+        "unit": "%",
+        "reference_range": "< 5.7%",
+        "status": "High"
+      },
+      {
+        "test_name": "Fasting Blood Sugar",
+        "value": "168",
+        "unit": "mg/dL",
+        "reference_range": "70 - 99 mg/dL",
+        "status": "High"
+      },
+      {
+        "test_name": "Total Cholesterol",
+        "value": "230",
+        "unit": "mg/dL",
+        "reference_range": "<200",
+        "status": "High"
+      },
+      {
+        "test_name": "Serum Creatinine",
+        "value": "0.9",
+        "unit": "mg/dL",
+        "reference_range": "0.7 - 1.3 mg/dL",
+        "status": "Normal"
+      },
+      {
+        "test_name": "Blood Pressure",
+        "value": "138/88",
+        "unit": "mmHg",
+        "reference_range": "90/60 - 120/80 mmHg",
+        "status": "Normal"
+      }
+    ],
+    "medications": [
+      "Metformin 500mg BD",
+      "Atorvastatin 20mg HS",
+      "Telmisartan 40mg OD"
+    ],
+    "procedures": [
+      "Electrocardiogram"
+    ],
+    "medical_history": [
+      "Known case of Type 2 Diabetes Mellitus x 8 years",
+      "Known hypertensive"
+    ],
+    "has_table": true
+  },
+  {
+    "id": 29,
+    "filename": "report_29_genmed_hypertension_metabolic.pdf",
+    "format": "digital_pdf",
+    "specialty_domain": "General Medicine",
+    "metadata": {
+      "patient_name": "Preeti Sen",
+      "patient_id": "MRN-GEN-5541",
+      "report_date": "21/07/2025"
+    },
+    "demographics": {
+      "age": 47,
+      "gender": "Female"
+    },
+    "conditions": [
+      "Hypertension",
+      "Hyperlipidemia"
+    ],
+    "symptoms": [
+      "headache",
+      "dizziness",
+      "fatigue"
+    ],
+    "tests": [
+      "ECG",
+      "Lipid Panel",
+      "RFT"
+    ],
+    "test_results": [
+      {
+        "test_name": "Blood Pressure",
+        "value": "146/92",
+        "unit": "mmHg",
+        "reference_range": "90/60 - 120/80 mmHg",
+        "status": "High"
+      },
+      {
+        "test_name": "Total Cholesterol",
+        "value": "225",
+        "unit": "mg/dL",
+        "reference_range": "<200",
+        "status": "High"
+      },
+      {
+        "test_name": "Serum Creatinine",
+        "value": "0.8",
+        "unit": "mg/dL",
+        "reference_range": "0.7 - 1.3 mg/dL",
+        "status": "Normal"
+      }
+    ],
+    "medications": [
+      "Telmisartan 40mg OD",
+      "Rosuvastatin 10mg HS"
+    ],
+    "procedures": [
+      "Electrocardiogram"
+    ],
+    "medical_history": [
+      "Duration: 2 years",
+      "No prior surgeries"
+    ],
+    "has_table": true
+  },
+  {
+    "id": 30,
+    "filename": "report_30_genmed_fever_infection_scanned.pdf",
+    "format": "scanned_pdf",
+    "specialty_domain": "General Medicine",
+    "metadata": {
+      "patient_name": "Naveen Yadav",
+      "patient_id": "MRN-GEN-9904",
+      "report_date": "01/09/2025"
+    },
+    "demographics": {
+      "age": 38,
+      "gender": "Male"
+    },
+    "conditions": [
+      "Pneumonia"
+    ],
+    "symptoms": [
+      "fever",
+      "chills",
+      "fatigue",
+      "cough"
+    ],
+    "tests": [
+      "Complete Blood Count",
+      "Chest Radiograph"
+    ],
+    "test_results": [
+      {
+        "test_name": "WBC Count",
+        "value": "13,600",
+        "unit": "/mcL",
+        "reference_range": "4,500 - 11,000 /mcL",
+        "status": "High"
+      },
+      {
+        "test_name": "Platelet Count",
+        "value": "190,000",
+        "unit": "/mcL",
+        "reference_range": "150,000 - 450,000 /mcL",
+        "status": "Normal"
+      },
+      {
+        "test_name": "Blood Pressure",
+        "value": "120/78",
+        "unit": "mmHg",
+        "reference_range": "90/60 - 120/80 mmHg",
+        "status": "Normal"
+      }
+    ],
+    "medications": [
+      "Paracetamol 650mg TDS",
+      "Amoxicillin 500mg TDS"
+    ],
+    "procedures": [
+      "X-Ray Chest"
+    ],
+    "medical_history": [
+      "Presenting since 1 week",
+      "No chronic comorbidities"
+    ],
+    "has_table": false
+  }
+]

@@ -1,2 +1,35 @@
+cat >> .gitignore <<'EOF'
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
 frontend/node_modules/
-frontend/node_modules/
+frontend/dist/
+
+# Databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Runtime uploads
+backend/uploads/
+uploads/
+
+# Logs / temporary files
+*.log
+scratch/
+test_screenshots/
+
+# OS
+.DS_Store
+EOF

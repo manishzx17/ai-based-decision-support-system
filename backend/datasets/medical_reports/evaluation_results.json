@@ -1,0 +1,685 @@
+{
+  "summary": {
+    "total_reports": 30,
+    "metadata_accuracy": {
+      "patient_name_acc": 0.967,
+      "patient_id_acc": 1.0,
+      "report_date_acc": 1.0,
+      "mean_metadata_acc": 0.989
+    },
+    "demographics_accuracy": {
+      "age_acc": 1.0,
+      "gender_acc": 1.0,
+      "mean_demographics_acc": 1.0
+    },
+    "mean_clinical_entity_f1": {
+      "conditions_f1": 0.632,
+      "symptoms_f1": 0.975,
+      "tests_f1": 0.877,
+      "medications_f1": 0.976,
+      "procedures_f1": 0.626
+    }
+  },
+  "reports": [
+    {
+      "id": 1,
+      "filename": "report_01_cardio_angiogram.pdf",
+      "format": "digital_pdf",
+      "specialty": "Cardiology",
+      "ocr_method": "PDF Text Extraction",
+      "ocr_length": 1670,
+      "metadata_accuracy": {
+        "name": true,
+        "id": true,
+        "date": true
+      },
+      "demographics_accuracy": {
+        "age": true,
+        "gender": true
+      },
+      "condition_f1": 0.444,
+      "symptom_f1": 0.857,
+      "test_f1": 1.0,
+      "medication_f1": 1.0,
+      "procedure_f1": 0.4
+    },
+    {
+      "id": 2,
+      "filename": "report_02_cardio_cad_echo.pdf",
+      "format": "digital_pdf",
+      "specialty": "Cardiology",
+      "ocr_method": "PDF Text Extraction",
+      "ocr_length": 1397,
+      "metadata_accuracy": {
+        "name": true,
+        "id": true,
+        "date": true
+      },
+      "demographics_accuracy": {
+        "age": true,
+        "gender": true
+      },
+      "condition_f1": 0.571,
+      "symptom_f1": 1.0,
+      "test_f1": 0.8,
+      "medication_f1": 1.0,
+      "procedure_f1": 1.0
+    },
+    {
+      "id": 3,
+      "filename": "report_03_cardio_stemi_scanned.pdf",
+      "format": "scanned_pdf",
+      "specialty": "Cardiology",
+      "ocr_method": "Multi-Pass OCR Engine",
+      "ocr_length": 960,
+      "metadata_accuracy": {
+        "name": true,
+        "id": true,
+        "date": true
+      },
+      "demographics_accuracy": {
+        "age": true,
+        "gender": true
+      },
+      "condition_f1": 0.667,
+      "symptom_f1": 1.0,
+      "test_f1": 1.0,
+      "medication_f1": 1.0,
+      "procedure_f1": 0.667
+    },
+    {
+      "id": 4,
+      "filename": "report_04_cardio_angina_table.png",
+      "format": "image_png",
+      "specialty": "Cardiology",
+      "ocr_method": "Multi-Pass OCR Engine",
+      "ocr_length": 917,
+      "metadata_accuracy": {
+        "name": false,
+        "id": true,
+        "date": true
+      },
+      "demographics_accuracy": {
+        "age": true,
+        "gender": true
+      },
+      "condition_f1": 0.0,
+      "symptom_f1": 0.8,
+      "test_f1": 0.667,
+      "medication_f1": 1.0,
+      "procedure_f1": 0.0
+    },
+    {
+      "id": 5,
+      "filename": "report_05_cardio_triple_vessel.pdf",
+      "format": "digital_pdf",
+      "specialty": "Cardiology",
+      "ocr_method": "PDF Text Extraction",
+      "ocr_length": 1597,
+      "metadata_accuracy": {
+        "name": true,
+        "id": true,
+        "date": true
+      },
+      "demographics_accuracy": {
+        "age": true,
+        "gender": true
+      },
+      "condition_f1": 0.571,
+      "symptom_f1": 1.0,
+      "test_f1": 1.0,
+      "medication_f1": 1.0,
+      "procedure_f1": 0.667
+    },
+    {
+      "id": 6,
+      "filename": "report_06_neuro_meningioma_mri.pdf",
+      "format": "digital_pdf",
+      "specialty": "Neurology",
+      "ocr_method": "PDF Text Extraction",
+      "ocr_length": 1282,
+      "metadata_accuracy": {
+        "name": true,
+        "id": true,
+        "date": true
+      },
+      "demographics_accuracy": {
+        "age": true,
+        "gender": true
+      },
+      "condition_f1": 0.667,
+      "symptom_f1": 1.0,
+      "test_f1": 1.0,
+      "medication_f1": 1.0,
+      "procedure_f1": 0.667
+    },
+    {
+      "id": 7,
+      "filename": "report_07_neuro_ischemic_stroke_scanned.pdf",
+      "format": "scanned_pdf",
+      "specialty": "Neurology",
+      "ocr_method": "Multi-Pass OCR Engine",
+      "ocr_length": 946,
+      "metadata_accuracy": {
+        "name": true,
+        "id": true,
+        "date": true
+      },
+      "demographics_accuracy": {
+        "age": true,
+        "gender": true
+      },
+      "condition_f1": 0.667,
+      "symptom_f1": 1.0,
+      "test_f1": 0.8,
+      "medication_f1": 1.0,
+      "procedure_f1": 0.5
+    },
+    {
+      "id": 8,
+      "filename": "report_08_neuro_glioma_histopath.pdf",
+      "format": "digital_pdf",
+      "specialty": "Neurology",
+      "ocr_method": "PDF Text Extraction",
+      "ocr_length": 1252,
+      "metadata_accuracy": {
+        "name": true,
+        "id": true,
+        "date": true
+      },
+      "demographics_accuracy": {
+        "age": true,
+        "gender": true
+      },
+      "condition_f1": 0.667,
+      "symptom_f1": 1.0,
+      "test_f1": 1.0,
+      "medication_f1": 1.0,
+      "procedure_f1": 0.8
+    },
+    {
+      "id": 9,
+      "filename": "report_09_neuro_seizure_eeg.png",
+      "format": "image_png",
+      "specialty": "Neurology",
+      "ocr_method": "Multi-Pass OCR Engine",
+      "ocr_length": 868,
+      "metadata_accuracy": {
+        "name": true,
+        "id": true,
+        "date": true
+      },
+      "demographics_accuracy": {
+        "age": true,
+        "gender": true
+      },
+      "condition_f1": 0.667,
+      "symptom_f1": 0.857,
+      "test_f1": 1.0,
+      "medication_f1": 1.0,
+      "procedure_f1": 1.0
+    },
+    {
+      "id": 10,
+      "filename": "report_10_ortho_knee_osteoarthritis.pdf",
+      "format": "digital_pdf",
+      "specialty": "Orthopedics",
+      "ocr_method": "PDF Text Extraction",
+      "ocr_length": 1443,
+      "metadata_accuracy": {
+        "name": true,
+        "id": true,
+        "date": true
+      },
+      "demographics_accuracy": {
+        "age": true,
+        "gender": true
+      },
+      "condition_f1": 0.667,
+      "symptom_f1": 1.0,
+      "test_f1": 1.0,
+      "medication_f1": 1.0,
+      "procedure_f1": 0.8
+    },
+    {
+      "id": 11,
+      "filename": "report_11_ortho_lumbar_spondylosis_scanned.pdf",
+      "format": "scanned_pdf",
+      "specialty": "Orthopedics",
+      "ocr_method": "Multi-Pass OCR Engine",
+      "ocr_length": 896,
+      "metadata_accuracy": {
+        "name": true,
+        "id": true,
+        "date": true
+      },
+      "demographics_accuracy": {
+        "age": true,
+        "gender": true
+      },
+      "condition_f1": 0.571,
+      "symptom_f1": 1.0,
+      "test_f1": 1.0,
+      "medication_f1": 1.0,
+      "procedure_f1": 0.667
+    },
+    {
+      "id": 12,
+      "filename": "report_12_ortho_hip_fracture.pdf",
+      "format": "digital_pdf",
+      "specialty": "Orthopedics",
+      "ocr_method": "PDF Text Extraction",
+      "ocr_length": 1283,
+      "metadata_accuracy": {
+        "name": true,
+        "id": true,
+        "date": true
+      },
+      "demographics_accuracy": {
+        "age": true,
+        "gender": true
+      },
+      "condition_f1": 0.667,
+      "symptom_f1": 1.0,
+      "test_f1": 1.0,
+      "medication_f1": 1.0,
+      "procedure_f1": 0.8
+    },
+    {
+      "id": 13,
+      "filename": "report_13_ortho_knee_replacement_table.png",
+      "format": "image_png",
+      "specialty": "Orthopedics",
+      "ocr_method": "Multi-Pass OCR Engine",
+      "ocr_length": 999,
+      "metadata_accuracy": {
+        "name": true,
+        "id": true,
+        "date": true
+      },
+      "demographics_accuracy": {
+        "age": true,
+        "gender": true
+      },
+      "condition_f1": 0.5,
+      "symptom_f1": 1.0,
+      "test_f1": 1.0,
+      "medication_f1": 1.0,
+      "procedure_f1": 0.8
+    },
+    {
+      "id": 14,
+      "filename": "report_14_oncol_colon_carcinoma.pdf",
+      "format": "digital_pdf",
+      "specialty": "Oncology",
+      "ocr_method": "PDF Text Extraction",
+      "ocr_length": 1376,
+      "metadata_accuracy": {
+        "name": true,
+        "id": true,
+        "date": true
+      },
+      "demographics_accuracy": {
+        "age": true,
+        "gender": true
+      },
+      "condition_f1": 0.667,
+      "symptom_f1": 1.0,
+      "test_f1": 1.0,
+      "medication_f1": 1.0,
+      "procedure_f1": 1.0
+    },
+    {
+      "id": 15,
+      "filename": "report_15_oncol_breast_carcinoma_table.pdf",
+      "format": "digital_pdf",
+      "specialty": "Oncology",
+      "ocr_method": "PDF Text Extraction",
+      "ocr_length": 1389,
+      "metadata_accuracy": {
+        "name": true,
+        "id": true,
+        "date": true
+      },
+      "demographics_accuracy": {
+        "age": true,
+        "gender": true
+      },
+      "condition_f1": 0.667,
+      "symptom_f1": 1.0,
+      "test_f1": 1.0,
+      "medication_f1": 1.0,
+      "procedure_f1": 1.0
+    },
+    {
+      "id": 16,
+      "filename": "report_16_oncol_lung_neoplasm_scanned.pdf",
+      "format": "scanned_pdf",
+      "specialty": "Oncology",
+      "ocr_method": "Multi-Pass OCR Engine",
+      "ocr_length": 923,
+      "metadata_accuracy": {
+        "name": true,
+        "id": true,
+        "date": true
+      },
+      "demographics_accuracy": {
+        "age": true,
+        "gender": true
+      },
+      "condition_f1": 0.667,
+      "symptom_f1": 1.0,
+      "test_f1": 0.8,
+      "medication_f1": 1.0,
+      "procedure_f1": 1.0
+    },
+    {
+      "id": 17,
+      "filename": "report_17_oncol_adenoma_biopsy.png",
+      "format": "image_png",
+      "specialty": "Oncology",
+      "ocr_method": "Multi-Pass OCR Engine",
+      "ocr_length": 852,
+      "metadata_accuracy": {
+        "name": true,
+        "id": true,
+        "date": true
+      },
+      "demographics_accuracy": {
+        "age": true,
+        "gender": true
+      },
+      "condition_f1": 0.667,
+      "symptom_f1": 1.0,
+      "test_f1": 1.0,
+      "medication_f1": 1.0,
+      "procedure_f1": 1.0
+    },
+    {
+      "id": 18,
+      "filename": "report_18_gastro_cholelithiasis.pdf",
+      "format": "digital_pdf",
+      "specialty": "Gastroenterology",
+      "ocr_method": "PDF Text Extraction",
+      "ocr_length": 1559,
+      "metadata_accuracy": {
+        "name": true,
+        "id": true,
+        "date": true
+      },
+      "demographics_accuracy": {
+        "age": true,
+        "gender": true
+      },
+      "condition_f1": 0.667,
+      "symptom_f1": 1.0,
+      "test_f1": 1.0,
+      "medication_f1": 1.0,
+      "procedure_f1": 1.0
+    },
+    {
+      "id": 19,
+      "filename": "report_19_gastro_peptic_ulcer_scanned.pdf",
+      "format": "scanned_pdf",
+      "specialty": "Gastroenterology",
+      "ocr_method": "Multi-Pass OCR Engine",
+      "ocr_length": 910,
+      "metadata_accuracy": {
+        "name": true,
+        "id": true,
+        "date": true
+      },
+      "demographics_accuracy": {
+        "age": true,
+        "gender": true
+      },
+      "condition_f1": 1.0,
+      "symptom_f1": 1.0,
+      "test_f1": 0.667,
+      "medication_f1": 0.667,
+      "procedure_f1": 1.0
+    },
+    {
+      "id": 20,
+      "filename": "report_20_gastro_cholecystitis_table.pdf",
+      "format": "digital_pdf",
+      "specialty": "Gastroenterology",
+      "ocr_method": "PDF Text Extraction",
+      "ocr_length": 1408,
+      "metadata_accuracy": {
+        "name": true,
+        "id": true,
+        "date": true
+      },
+      "demographics_accuracy": {
+        "age": true,
+        "gender": true
+      },
+      "condition_f1": 0.667,
+      "symptom_f1": 1.0,
+      "test_f1": 1.0,
+      "medication_f1": 1.0,
+      "procedure_f1": 1.0
+    },
+    {
+      "id": 21,
+      "filename": "report_21_gastro_colonoscopy.png",
+      "format": "image_png",
+      "specialty": "Gastroenterology",
+      "ocr_method": "Multi-Pass OCR Engine",
+      "ocr_length": 841,
+      "metadata_accuracy": {
+        "name": true,
+        "id": true,
+        "date": true
+      },
+      "demographics_accuracy": {
+        "age": true,
+        "gender": true
+      },
+      "condition_f1": 0.667,
+      "symptom_f1": 1.0,
+      "test_f1": 1.0,
+      "medication_f1": 1.0,
+      "procedure_f1": 1.0
+    },
+    {
+      "id": 22,
+      "filename": "report_22_pulmon_pneumonia.pdf",
+      "format": "digital_pdf",
+      "specialty": "Pulmonology",
+      "ocr_method": "PDF Text Extraction",
+      "ocr_length": 1421,
+      "metadata_accuracy": {
+        "name": true,
+        "id": true,
+        "date": true
+      },
+      "demographics_accuracy": {
+        "age": true,
+        "gender": true
+      },
+      "condition_f1": 0.667,
+      "symptom_f1": 1.0,
+      "test_f1": 1.0,
+      "medication_f1": 1.0,
+      "procedure_f1": 1.0
+    },
+    {
+      "id": 23,
+      "filename": "report_23_pulmon_copd_bronchitis_scanned.pdf",
+      "format": "scanned_pdf",
+      "specialty": "Pulmonology",
+      "ocr_method": "Multi-Pass OCR Engine",
+      "ocr_length": 891,
+      "metadata_accuracy": {
+        "name": true,
+        "id": true,
+        "date": true
+      },
+      "demographics_accuracy": {
+        "age": true,
+        "gender": true
+      },
+      "condition_f1": 0.5,
+      "symptom_f1": 1.0,
+      "test_f1": 0.0,
+      "medication_f1": 1.0,
+      "procedure_f1": 0.0
+    },
+    {
+      "id": 24,
+      "filename": "report_24_pulmon_pleural_effusion.png",
+      "format": "image_png",
+      "specialty": "Pulmonology",
+      "ocr_method": "Multi-Pass OCR Engine",
+      "ocr_length": 863,
+      "metadata_accuracy": {
+        "name": true,
+        "id": true,
+        "date": true
+      },
+      "demographics_accuracy": {
+        "age": true,
+        "gender": true
+      },
+      "condition_f1": 0.667,
+      "symptom_f1": 1.0,
+      "test_f1": 0.8,
+      "medication_f1": 1.0,
+      "procedure_f1": 1.0
+    },
+    {
+      "id": 25,
+      "filename": "report_25_nephro_ckd_renal_failure.pdf",
+      "format": "digital_pdf",
+      "specialty": "Nephrology",
+      "ocr_method": "PDF Text Extraction",
+      "ocr_length": 1739,
+      "metadata_accuracy": {
+        "name": true,
+        "id": true,
+        "date": true
+      },
+      "demographics_accuracy": {
+        "age": true,
+        "gender": true
+      },
+      "condition_f1": 0.667,
+      "symptom_f1": 1.0,
+      "test_f1": 1.0,
+      "medication_f1": 0.8,
+      "procedure_f1": 0.0
+    },
+    {
+      "id": 26,
+      "filename": "report_26_nephro_diabetic_nephropathy_scanned.pdf",
+      "format": "scanned_pdf",
+      "specialty": "Nephrology",
+      "ocr_method": "Multi-Pass OCR Engine",
+      "ocr_length": 1008,
+      "metadata_accuracy": {
+        "name": true,
+        "id": true,
+        "date": true
+      },
+      "demographics_accuracy": {
+        "age": true,
+        "gender": true
+      },
+      "condition_f1": 0.8,
+      "symptom_f1": 1.0,
+      "test_f1": 0.667,
+      "medication_f1": 0.8,
+      "procedure_f1": 0.0
+    },
+    {
+      "id": 27,
+      "filename": "report_27_nephro_hypertensive_nephrosclerosis.png",
+      "format": "image_png",
+      "specialty": "Nephrology",
+      "ocr_method": "Multi-Pass OCR Engine",
+      "ocr_length": 897,
+      "metadata_accuracy": {
+        "name": true,
+        "id": true,
+        "date": true
+      },
+      "demographics_accuracy": {
+        "age": true,
+        "gender": true
+      },
+      "condition_f1": 0.667,
+      "symptom_f1": 1.0,
+      "test_f1": 0.5,
+      "medication_f1": 1.0,
+      "procedure_f1": 0.0
+    },
+    {
+      "id": 28,
+      "filename": "report_28_genmed_t2dm_hba1c_table.pdf",
+      "format": "digital_pdf",
+      "specialty": "General Medicine",
+      "ocr_method": "PDF Text Extraction",
+      "ocr_length": 1731,
+      "metadata_accuracy": {
+        "name": true,
+        "id": true,
+        "date": true
+      },
+      "demographics_accuracy": {
+        "age": true,
+        "gender": true
+      },
+      "condition_f1": 0.667,
+      "symptom_f1": 1.0,
+      "test_f1": 0.75,
+      "medication_f1": 1.0,
+      "procedure_f1": 0.0
+    },
+    {
+      "id": 29,
+      "filename": "report_29_genmed_hypertension_metabolic.pdf",
+      "format": "digital_pdf",
+      "specialty": "General Medicine",
+      "ocr_method": "PDF Text Extraction",
+      "ocr_length": 1377,
+      "metadata_accuracy": {
+        "name": true,
+        "id": true,
+        "date": true
+      },
+      "demographics_accuracy": {
+        "age": true,
+        "gender": true
+      },
+      "condition_f1": 0.667,
+      "symptom_f1": 1.0,
+      "test_f1": 0.857,
+      "medication_f1": 1.0,
+      "procedure_f1": 0.0
+    },
+    {
+      "id": 30,
+      "filename": "report_30_genmed_fever_infection_scanned.pdf",
+      "format": "scanned_pdf",
+      "specialty": "General Medicine",
+      "ocr_method": "Multi-Pass OCR Engine",
+      "ocr_length": 982,
+      "metadata_accuracy": {
+        "name": true,
+        "id": true,
+        "date": true
+      },
+      "demographics_accuracy": {
+        "age": true,
+        "gender": true
+      },
+      "condition_f1": 0.667,
+      "symptom_f1": 0.75,
+      "test_f1": 1.0,
+      "medication_f1": 1.0,
+      "procedure_f1": 0.0
+    }
+  ]
+}

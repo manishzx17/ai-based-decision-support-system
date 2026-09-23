@@ -35,7 +35,19 @@ class PatientProfile(Base):
     emergency_contact_name = Column(String, default="Family Member")
     emergency_contact_phone = Column(String, default="+91 98765 43210")
 
+    # Phase 3 Persistent Clinical Profile Fields
+    conditions = Column(JSON, default=list)
+    symptoms = Column(JSON, default=list)
+    tests = Column(JSON, default=list)
+    test_results = Column(JSON, default=list)
+    medications = Column(JSON, default=list)
+    procedures = Column(JSON, default=list)
+    medical_history = Column(JSON, default=list)
+    last_report_id = Column(Integer, ForeignKey("medical_reports.id"), nullable=True)
+    structured_data = Column(JSON, nullable=True)
+
     user = relationship("User", back_populates="profile")
+    last_report = relationship("MedicalReport", foreign_keys=[last_report_id])
 
 
 class MedicalReport(Base):
@@ -50,10 +62,26 @@ class MedicalReport(Base):
     summary = Column(Text, nullable=True)
     recommended_specialty = Column(String, default="General Medicine")
     important_notes = Column(Text, nullable=True)
+    grounding_notes = Column(Text, nullable=True)
+    grounding_sources = Column(JSON, nullable=True)
+    structured_data = Column(JSON, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
     user = relationship("User", back_populates="reports")
     entities = relationship("ExtractedEntity", back_populates="report", cascade="all, delete-orphan")
+
+    @property
+    def structured_info(self):
+        if self.structured_data:
+            return self.structured_data
+        if self.ocr_text and self.status == "COMPLETED":
+            try:
+                from backend.ai.clinical_bert import clinical_bert_extractor
+                return clinical_bert_extractor.extract_structured_clinical_info(self.ocr_text)
+            except Exception:
+                pass
+        return None
+
 
 
 class ExtractedEntity(Base):
@@ -86,6 +114,14 @@ class Hospital(Base):
     facilities = Column(JSON, default=list) # ICU, Helicopter Pad, Interpreter, International Lounge
     contact_phone = Column(String, default="+91 40 2345 6789")
     availability_status = Column(String, default="High")
+    estimated_cost_tier = Column(Float, default=320000.0)
+    cost_tier = Column(String, default="Moderate") # Budget, Moderate, Premium
+    quality_rating = Column(Float, default=4.6)
+    accreditation = Column(String, default="NABH") # NABH, JCI, NABH & JCI
+    treatment_capabilities = Column(JSON, default=list) # List of specific procedure capabilities
+    icu_beds = Column(Integer, default=50)
+    emergency_24x7 = Column(Boolean, default=True)
+    provenance = Column(JSON, nullable=True)
 
     doctors = relationship("Doctor", back_populates="hospital")
     treatment_costs = relationship("TreatmentCost", back_populates="hospital")
@@ -99,11 +135,13 @@ class Doctor(Base):
     hospital_id = Column(Integer, ForeignKey("hospitals.id"), nullable=False)
     name = Column(String, nullable=False)
     specialty = Column(String, nullable=False)
+    expertise = Column(JSON, default=[])
     experience_years = Column(Integer, default=12)
     qualification = Column(String, default="MBBS, MD, DM")
     rating = Column(Float, default=4.8)
     consultation_fee = Column(Float, default=1000.0)
     availability_days = Column(String, default="Mon - Sat")
+    provenance = Column(JSON, nullable=True)
 
     hospital = relationship("Hospital", back_populates="doctors")
 
@@ -239,3 +277,21 @@ class MedicalKnowledge(Base):
     content = Column(Text, nullable=False)
     keywords = Column(Text, nullable=False)
     source_reference = Column(String, default="Verified Clinical Practice Guidelines")
+    organization = Column(String, default="Clinical Organization")
+    reference_url = Column(String, nullable=True)
+
+
+class AuditLog(Base):
+    __tablename__ = "audit_logs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)
+    action = Column(String, nullable=False, index=True) # e.g. REPORT_UPLOAD, REPORT_VIEW, REPORT_ACCESS_DENIED, AUTH_LOGIN_SUCCESS, AUTH_LOGIN_FAILED, PROFILE_UPDATE
+    resource_type = Column(String, nullable=False) # medical_report, patient_profile, auth, travel_plan
+    resource_id = Column(String, nullable=True) # stringified resource ID if applicable
+    ip_address = Column(String, nullable=True)
+    status = Column(String, default="SUCCESS") # SUCCESS, DENIED, FAILED
+    details = Column(Text, nullable=True) # non-PII operational summary (e.g. file size, sanitized reason)
+    timestamp = Column(DateTime, default=datetime.utcnow, index=True)
+
+    user = relationship("User", foreign_keys=[user_id])

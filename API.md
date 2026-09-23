@@ -9,7 +9,7 @@
 - `PUT /api/auth/profile` - Update patient vitals, allergies, chronic conditions
 
 ### Medical Reports & OCR
-- `POST /api/reports/upload` - Upload PDF/PNG/JPG medical report for OCR & ClinicalBERT parsing
+- `POST /api/reports/upload` - Upload PDF/PNG/JPG medical report for OCR & Biomedical NER parsing
 - `GET /api/reports/` - List user medical reports
 - `GET /api/reports/{id}` - Fetch detailed report analysis & extracted entities
 

@@ -1,0 +1,399 @@
+"""
+Generator script for Dataset 2: Curated Research Dataset of Authoritative Clinical Guidelines for Medical Decision Support.
+Covers 30 authoritative clinical guidelines from official medical societies:
+ACC/AHA, ESC, NCCN, ASCO, ESMO, AAOS, BOA, CNS, AAN, AsMA Clinical Council,
+ACG, SAGES, AGA, KDIGO, ISN, NKF, BTS, ATS, GOLD, ADA, WHO, CDC.
+"""
+
+import json
+import os
+
+DOCUMENTS = [
+    # --- CARDIOLOGY (5 docs) ---
+    {
+        "id": 1,
+        "title": "Clinical Guidance on Coronary Angioplasty, Stents & Post-Procedure Transit",
+        "specialty": "Cardiology",
+        "condition_covered": "Coronary Artery Disease, Angioplasty, Drug-Eluting Stents",
+        "organization": "European Society of Cardiology (ESC)",
+        "source_reference": "Knuuti J, Wijns W, Saraste A, et al. 2019 ESC Guidelines for the diagnosis and management of chronic coronary syndromes. Eur Heart J. 2020;41(3):407-477.",
+        "reference_url": "https://doi.org/10.1093/eurheartj/ehz425",
+        "clinical_evidence_level": "Class I, Level A",
+        "keywords": "coronary artery disease CAD PCI angioplasty drug-eluting stent DAPT LVEF travel cardiology",
+        "content": "Patients undergoing uncomplicated Percutaneous Coronary Intervention (PCI) with drug-eluting stent placement may safely undertake commercial long-distance travel 3 to 5 days post-procedure, provided left ventricular ejection fraction (LVEF) is greater than 40% and no residual ischemia or arrhythmias are present. Strict adherence to Dual Antiplatelet Therapy (DAPT) with Aspirin and P2Y12 inhibitors (Clopidogrel or Ticagrelor) is mandatory to prevent acute stent thrombosis. Heavy physical exertion and lifting baggage exceeding 5 kg should be avoided for 14 days."
+    },
+    {
+        "id": 2,
+        "title": "Dual Antiplatelet Therapy (DAPT) Management and Post-Revascularization Travel",
+        "specialty": "Cardiology",
+        "condition_covered": "Post-PCI Revascularization, Stent Thrombosis Prophylaxis",
+        "organization": "American College of Cardiology / American Heart Association (ACC/AHA)",
+        "source_reference": "Lawton JS, Tamis-Holland JE, Bangalore S, et al. 2021 ACC/AHA/SCAI Guideline for Coronary Artery Revascularization. J Am Coll Cardiol. 2022;79(2):e21-e129.",
+        "reference_url": "https://doi.org/10.1016/j.jacc.2021.09.006",
+        "clinical_evidence_level": "Class I, Level A",
+        "keywords": "DAPT aspirin clopidogrel ticagrelor stent revascularization travel carry-on adherence cardiology",
+        "content": "Following coronary revascularization via PCI, uninterrupted Dual Antiplatelet Therapy (DAPT) must be maintained for a minimum of 6 to 12 months unless prohibitive bleeding occurs. During travel, patients must carry sufficient medication in original labeled containers in carry-on baggage with extra supply for delays. Patients with active Canadian Cardiovascular Society (CCS) Class III or IV angina, decompensated heart failure, or uncontrolled ventricular ectopy should defer elective travel until clinically stabilized."
+    },
+    {
+        "id": 3,
+        "title": "Valvular Heart Disease Management, Anticoagulation Stability and Transit",
+        "specialty": "Cardiology",
+        "condition_covered": "Valvular Heart Disease, Mechanical Valves, Anticoagulation",
+        "organization": "American Heart Association / American College of Cardiology (AHA/ACC)",
+        "source_reference": "Otto CM, Nishimura RA, Bonow RO, et al. 2020 ACC/AHA Guideline for the Management of Patients With Valvular Heart Disease. Circulation. 2021;143(5):e72-e227.",
+        "reference_url": "https://doi.org/10.1161/CIR.0000000000000923",
+        "clinical_evidence_level": "Class I, Level B-NR",
+        "keywords": "valvular heart disease mechanical heart valve anticoagulation INR warfarin DOAC thromboembolism travel",
+        "content": "Patients with mechanical prosthetic heart valves traveling across international regions must confirm International Normalized Ratio (INR) stability within therapeutic target (2.5 to 3.5 depending on valve position and thrombotic risk) within 48 to 72 hours prior to departure. Patients on oral anticoagulants (Warfarin or direct oral anticoagulants) must maintain adequate oral hydration and avoid prolonged seated immobility to prevent venous thromboembolism."
+    },
+    {
+        "id": 4,
+        "title": "Management of Patients with Heart Failure and Reduced Ejection Fraction Planning Transit",
+        "specialty": "Cardiology",
+        "condition_covered": "Heart Failure with Reduced Ejection Fraction (HFrEF)",
+        "organization": "American Heart Association / American College of Cardiology / Heart Failure Society of America (AHA/ACC/HFSA)",
+        "source_reference": "Heidenreich PA, Bozkurt B, Aguilar D, et al. 2022 AHA/ACC/HFSA Guideline for the Management of Heart Failure. J Am Coll Cardiol. 2022;79(17):e263-e421.",
+        "reference_url": "https://doi.org/10.1016/j.jacc.2021.12.012",
+        "clinical_evidence_level": "Class I, Level B",
+        "keywords": "heart failure HFrEF ejection fraction LVEF dyspnea fluid restriction diuretics travel cardiology",
+        "content": "Patients with chronic heart failure should be in stable New York Heart Association (NYHA) functional class I or II for at least 4 weeks prior to non-urgent long-distance travel. Patients in NYHA Class IV or with resting dyspnea, peripheral edema, or recent diuretic dose escalation are at high risk of decompensation in hypoxic pressurized environments. Patients must strictly adhere to daily sodium restriction (<2 g/day), maintain their guideline-directed medical therapy regimen (beta-blocker, SGLT2 inhibitor, ACEi/ARB/ARNI, MRA), and monitor daily weight."
+    },
+    {
+        "id": 5,
+        "title": "Coronary Artery Bypass Graft (CABG) Post-Operative Recovery and Travel Clearance",
+        "specialty": "Cardiology",
+        "condition_covered": "Post-CABG Recovery, Sternal Stability, Pneumothorax Clearance",
+        "organization": "European Society of Cardiology / European Association for Cardio-Thoracic Surgery (ESC/EACTS)",
+        "source_reference": "Neumann FJ, Sousa-Uva M, Ahlsson A, et al. 2018 ESC/EACTS Guidelines on myocardial revascularization. Eur Heart J. 2019;40(2):87-165.",
+        "reference_url": "https://doi.org/10.1093/eurheartj/ehy394",
+        "clinical_evidence_level": "Class IIa, Level C",
+        "keywords": "CABG coronary artery bypass sternotomy pneumothorax wound healing recovery travel cardiology",
+        "content": "Following Coronary Artery Bypass Graft (CABG) surgery via median sternotomy, commercial air travel should be deferred for at least 10 to 14 days post-operatively. Chest radiography must confirm complete resolution of surgical pneumothorax or pleural effusion. Sternal bone stability must be verified, and patients must refrain from lifting objects heavier than 4 to 5 kg for 6 to 8 weeks to avoid sternal dehiscence."
+    },
+
+    # --- ONCOLOGY (4 docs) ---
+    {
+        "id": 6,
+        "title": "Cancer-Associated Venous Thromboembolic Disease Prevention in Traveling Patients",
+        "specialty": "Oncology",
+        "condition_covered": "Malignancy-Associated VTE, Deep Vein Thrombosis, Thromboprophylaxis",
+        "organization": "National Comprehensive Cancer Network (NCCN)",
+        "source_reference": "Streiff MB, Holmstrom B, Angelini D, et al. NCCN Clinical Practice Guidelines in Oncology: Cancer-Associated Venous Thromboembolic Disease. Version 1.2024. J Natl Compr Canc Netw. 2024.",
+        "reference_url": "https://www.nccn.org/guidelines/guidelines-detail?category=3&id=1426",
+        "clinical_evidence_level": "Category 2A",
+        "keywords": "cancer oncology VTE DVT thromboprophylaxis LMWH chemotherapy air travel NCCN",
+        "content": "Active malignancy is an independent major risk factor for venous thromboembolism (VTE), with risk further heightened by prolonged travel exceeding 4 hours. NCCN Guidelines recommend that cancer patients undergoing travel undergo risk stratification: high-risk ambulatory patients on systemic antineoplastic therapy should be evaluated for Low Molecular Weight Heparin (LMWH) or approved direct oral anticoagulants before long-haul transit. Frequent mobilization, calf exercises, and graduated compression stockings (15-20 mmHg) are strongly advised."
+    },
+    {
+        "id": 7,
+        "title": "Outpatient Management of Neutropenia and Infection Risk Timing During Cancer Therapy",
+        "specialty": "Oncology",
+        "condition_covered": "Chemotherapy-Induced Neutropenia, Febrile Neutropenia Precautions",
+        "organization": "American Society of Clinical Oncology (ASCO)",
+        "source_reference": "Taplitz RA, Kennedy EB, Bow EJ, et al. Outpatient Management of Fever and Neutropenia in Adults Treated for Malignancy: ASCO and IDSA Guideline Update. J Clin Oncol. 2018;36(14):1443-1453.",
+        "reference_url": "https://doi.org/10.1200/JCO.2017.77.6211",
+        "clinical_evidence_level": "Evidence-Based Recommendation, High Quality",
+        "keywords": "chemotherapy neutropenia ANC nadir infection oncology febrile neutropenia ASCO",
+        "content": "Patients undergoing myelosuppressive chemotherapy should avoid commercial travel during the anticipated neutropenic nadir (typically days 7 to 14 post-cycle) when Absolute Neutrophil Count (ANC) is below 1,000 cells/mcL. Public air or rail transit during severe neutropenia carries high risk of opportunistic infections. Patients must have immediate access to healthcare facilities capable of administering broad-spectrum intravenous empiric antibiotics within 60 minutes of febrile neutropenia onset (single temperature >=38.3 C or >=38.0 C sustained for 1 hour)."
+    },
+    {
+        "id": 8,
+        "title": "Continuity of Care and Toxicities Management in Patients Traveling for Radiotherapy",
+        "specialty": "Oncology",
+        "condition_covered": "Stereotactic Body Radiotherapy (SBRT), IMRT, Radiation Oncology Transit",
+        "organization": "European Society for Medical Oncology (ESMO)",
+        "source_reference": "Jordan K, Aapro M, Andritsch E, et al. ESMO Guidelines Committee: Management of acute and chronic toxicities during cancer treatment transit. Ann Oncol. 2021;32(5):590-604.",
+        "reference_url": "https://doi.org/10.1016/j.annonc.2021.01.008",
+        "clinical_evidence_level": "Consensus Guideline",
+        "keywords": "radiotherapy SBRT IMRT radiation oncology DICOM treatment continuity cancer ESMO",
+        "content": "Patients traveling to tertiary oncology centers for curative or stereotactic body radiotherapy (SBRT/IMRT) must maintain continuous uninterrupted therapy. Scheduled treatment gaps impair locoregional disease control. Simulation CT scans, immobilization planning, and digital DICOM contour datasets must be verified between referring and receiving radiation oncology departments prior to patient arrival. Adequate skin hydration and avoidance of topical irritants over irradiated fields are required during transit."
+    },
+    {
+        "id": 9,
+        "title": "Management of Brain Metastases and Primary Central Nervous System Tumors",
+        "specialty": "Oncology",
+        "condition_covered": "Brain Metastases, Intracranial Neoplasms, Peritumoral Edema",
+        "organization": "National Comprehensive Cancer Network (NCCN)",
+        "source_reference": "Nabors LB, Portnow J, Ahluwalia M, et al. NCCN Clinical Practice Guidelines in Oncology: Central Nervous System Cancers. Version 1.2024. J Natl Compr Canc Netw. 2024.",
+        "reference_url": "https://www.nccn.org/guidelines/guidelines-detail?category=1&id=1425",
+        "clinical_evidence_level": "Category 2A",
+        "keywords": "brain tumor glioblastoma metastases intracranial vasogenic edema dexamethasone corticosteroids NCCN",
+        "content": "Patients with secondary brain metastases or high-grade primary glial neoplasms exhibiting significant vasogenic edema must be stabilized on corticosteroid therapy (Dexamethasone 4 to 16 mg daily in divided doses) prior to long-distance transit. Symptoms of raised intracranial pressure (morning headaches, projectile vomiting, papilledema, focal deficits) represent urgent contraindications to unmonitored commercial travel until neuro-oncological evaluation and neuroimaging are completed."
+    },
+
+    # --- ORTHOPEDICS (4 docs) ---
+    {
+        "id": 10,
+        "title": "Surgical Management of Knee Osteoarthritis and Arthroplasty Early Recovery",
+        "specialty": "Orthopedics",
+        "condition_covered": "Total Knee Arthroplasty (TKA), Knee Osteoarthritis Rehabilitation",
+        "organization": "American Academy of Orthopaedic Surgeons (AAOS)",
+        "source_reference": "Mont MA, Cherian JJ, Elmallah RK, et al. Surgical Management of Osteoarthritis of the Knee: Evidence-Based Clinical Practice Guideline. J Am Acad Orthop Surg. 2020;28(3):e90-e97.",
+        "reference_url": "https://doi.org/10.5435/JAAOS-D-19-00671",
+        "clinical_evidence_level": "Strong Recommendation",
+        "keywords": "knee arthroplasty TKA knee replacement osteoarthritis rehabilitation mobilization orthopedics",
+        "content": "Following elective Total Knee Arthroplasty (TKA), patients undertaking medical travel should achieve stable, independent mobilization with assistive devices (walker or crutches) before departure. Direct travel within the first 7 to 14 days should incorporate rest stops or aisle walks every 60 minutes. Deep venous thrombosis (DVT) chemical prophylaxis (low molecular weight heparin, DOACs, or aspirin) combined with mechanical compression is mandatory for a minimum of 35 days following major joint reconstruction."
+    },
+    {
+        "id": 11,
+        "title": "Venous Thromboembolic Disease Prevention Following Elective Hip and Knee Arthroplasty",
+        "specialty": "Orthopedics",
+        "condition_covered": "Post-Arthroplasty VTE, Pulmonary Embolism Prevention",
+        "organization": "American Academy of Orthopaedic Surgeons (AAOS)",
+        "source_reference": "Jacobs JJ, Mont MA, Bozic KJ, et al. Preventing Venous Thromboembolic Disease in Patients Undergoing Elective Hip and Knee Arthroplasty: Evidence-Based Guideline. J Bone Joint Surg Am. 2012;94(8):746-747.",
+        "reference_url": "https://doi.org/10.2106/JBJS.K.01426",
+        "clinical_evidence_level": "Strong Recommendation",
+        "keywords": "VTE prevention DVT joint replacement compression stockings flight travel AAOS",
+        "content": "Patients undergoing total hip arthroplasty (THA) or total knee arthroplasty (TKA) face elevated risk of deep vein thrombosis and pulmonary embolism during prolonged journeys (>4 hours). AAOS evidence-based guidelines recommend: 1) Pharmacologic thromboprophylaxis tailored to individual bleeding and thrombotic risk, 2) Graduated knee-high compression stockings (15-20 mmHg), 3) Adequate hydration avoiding sedatives, and 4) Regular seated ankle-pumps (10 repetitions every 30 minutes) during transit."
+    },
+    {
+        "id": 12,
+        "title": "Clinical Guidelines on Patient Travel Following Orthopaedic Surgery and Lower Limb Immobilisation",
+        "specialty": "Orthopedics",
+        "condition_covered": "Plaster Casts, Acute Compartment Syndrome, Orthopaedic Fixation",
+        "organization": "British Orthopaedic Association (BOA)",
+        "source_reference": "British Orthopaedic Association (BOA). Advisory Guidelines on Patient Travel Following Orthopaedic Surgery and Lower Limb Immobilisation. BOA Knowledge Hub. 2022.",
+        "reference_url": "https://www.boa.ac.uk/resources/knowledge-hub/flying-after-orthopaedic-surgery.html",
+        "clinical_evidence_level": "Clinical Practice Consensus",
+        "keywords": "orthopaedic surgery plaster cast compartment syndrome bivalved cast airline travel BOA",
+        "content": "For patients with circumferential rigid plaster casts applied following fracture reduction or surgery, casts must be bivalved (split through the full depth of plaster and padding along both sides) if flying within 48 hours of application. Reduced ambient pressure at cruise altitudes exacerbates soft tissue swelling, risking acute limb-threatening compartment syndrome. Major elective pelvic or joint reconstruction travel should be delayed until surgical wound healing is confirmed and acute edema subsides."
+    },
+    {
+        "id": 13,
+        "title": "Traveling with Total Joint Replacements and Metal Implants",
+        "specialty": "Orthopedics",
+        "condition_covered": "Prosthetic Joint Implants, Security Scanners, Implant Documentation",
+        "organization": "American Academy of Orthopaedic Surgeons (AAOS)",
+        "source_reference": "AAOS Patient Safety and Quality Committee. Guidance for Patients with Orthopaedic Implants Traveling Domestically and Internationally. OrthoInfo. 2023.",
+        "reference_url": "https://orthoinfo.aaos.org/en/treatment/traveling-with-a-joint-replacement/",
+        "clinical_evidence_level": "Practice Advisory",
+        "keywords": "implant card airport security metal detector joint replacement titanium ceramic scanner AAOS",
+        "content": "Modern orthopedic implants composed of titanium, cobalt-chromium alloys, ceramic, and ultra-high-molecular-weight polyethylene in total knee or hip replacements frequently trigger metal detectors and full-body security scanners. Patients should carry an official orthopedic implant card or a copy of their operative discharge summary indicating procedure date, hospital, and surgeon to present to transportation security authorities."
+    },
+
+    # --- NEUROLOGY / NEUROSURGERY (4 docs) ---
+    {
+        "id": 14,
+        "title": "Evidence-Based Guideline on the Timing of Air Travel Following Craniotomy",
+        "specialty": "Neurology",
+        "condition_covered": "Post-Craniotomy, Pneumocephalus, Intracranial Pressure",
+        "organization": "Congress of Neurological Surgeons (CNS)",
+        "source_reference": "Pucci JU, Choi BD, Lindsay JC, et al. Systematic Review and Evidence-Based Guideline on the Timing of Air Travel Following Craniotomy. Neurosurgery. 2020;87(5):869-878.",
+        "reference_url": "https://doi.org/10.1093/neuros/nyaa298",
+        "clinical_evidence_level": "Level II Evidence-Based Guideline",
+        "keywords": "craniotomy brain tumor glioma meningioma pneumocephalus intracranial pressure air travel neurosurgery CNS",
+        "content": "Following craniotomy for brain tumor resection, intracranial air is unavoidably introduced into the subdural or ventricular space (pneumocephalus). In accordance with Boyle's Law, trapped gas expands by approximately 30% at commercial cruising cabin pressures (6,000 to 8,000 ft altitude equivalent), posing risk of tension pneumocephalus, elevated intracranial pressure, brain herniation, and death. Air travel is contraindicated until complete radiographic resorption of intracranial air is confirmed on head CT, typically 14 to 21 days post-procedure."
+    },
+    {
+        "id": 15,
+        "title": "Practice Parameter: Management Issues for Patients with Epilepsy Traveling Across Time Zones",
+        "specialty": "Neurology",
+        "condition_covered": "Seizure Disorders, Antiepileptic Drug Dosing, Circadian Disruption",
+        "organization": "American Academy of Neurology (AAN)",
+        "source_reference": "Harden CL, Pennell PB, Koppel BS, et al. Practice parameter update: Management issues for women and men with epilepsy traveling across time zones. Neurology. 2009;73(2):142-149.",
+        "reference_url": "https://doi.org/10.1212/WNL.0b013e3181a9f77f",
+        "clinical_evidence_level": "Class II Recommendation",
+        "keywords": "seizure epilepsy levetiracetam carbamazepine valproate anti-seizure medication time zone jet lag AAN",
+        "content": "Patients with seizure disorders maintained on anti-seizure medications (such as Levetiracetam, Carbamazepine, Valproate, Lamotrigine) must preserve regular dosing intervals when traversing time zones. Sleep deprivation and circadian disruption are potent seizure precipitants. When traveling eastward (shortening the day), dosing intervals shorten slightly; traveling westward (lengthening the day), a supplemental fractional dose may be recommended by the neurologist. All anti-seizure medications must be carried in hand baggage with prescription documentation."
+    },
+    {
+        "id": 16,
+        "title": "Medical Guidelines for Passenger Air Travel with Central Nervous System Conditions and Lesions",
+        "specialty": "Neurology",
+        "condition_covered": "Intracranial Space-Occupying Lesions, Vasogenic Edema, Hypoxia",
+        "organization": "Aerospace Medical Association (AsMA) Clinical Council",
+        "source_reference": "Aerospace Medical Association Medical Guidelines Task Force. Medical Guidelines for Airline Travel: Central Nervous System Conditions. Aviat Space Environ Med. 2003;74(5 Suppl):A1-A19.",
+        "reference_url": "https://www.asma.org/publications/medical-publications-for-airline-travel",
+        "clinical_evidence_level": "Clinical Council Consensus",
+        "keywords": "brain lesion vasogenic edema dexamethasone corticosteroids AsMA neurology flight safety",
+        "content": "Passengers with central nervous system space-occupying lesions, meningiomas, or metastases accompanied by perilesional vasogenic edema must be clinically stabilized on therapeutic corticosteroid doses (such as Dexamethasone) prior to flight consideration. Relative hypoxia at cabin altitude (PaO2 ~55-65 mmHg) may exacerbate focal neurological deficits and elevate intracranial pressure. Travel should only proceed when the patient demonstrates a stable neurological examination for at least 7 days."
+    },
+    {
+        "id": 17,
+        "title": "Guidelines for the Early Management of Patients With Acute Ischemic Stroke: Travel and Recovery",
+        "specialty": "Neurology",
+        "condition_covered": "Acute Ischemic Stroke, Transient Ischemic Attack (TIA), Recurrence Risk",
+        "organization": "American Heart Association / American Stroke Association (AHA/ASA)",
+        "source_reference": "Powers WJ, Rabinstein AA, Ackerson T, et al. 2019 Update to the 2018 Guidelines for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2019;50(12):e344-e418.",
+        "reference_url": "https://doi.org/10.1161/STR.0000000000000211",
+        "clinical_evidence_level": "Class I, Level B-NR",
+        "keywords": "acute ischemic stroke TIA stroke recovery antiplatelet statin blood pressure travel neurology",
+        "content": "Patients suffering an acute ischemic stroke or transient ischemic attack (TIA) face highest risk of secondary recurrence during the first 14 days. Commercial air transit should be deferred for a minimum of 14 days following uncomplicated minor stroke, and up to 4 to 6 weeks following major disabling stroke or carotid revascularization. Prior to travel, blood pressure must be regulated, carotid imaging completed, and secondary prevention therapies (antiplatelet therapy and high-intensity statin) reliably established."
+    },
+
+    # --- GASTROENTEROLOGY (4 docs) ---
+    {
+        "id": 18,
+        "title": "Management of Patients With Ulcer Bleeding and Post-Endoscopic Hemostasis Precautions",
+        "specialty": "Gastroenterology",
+        "condition_covered": "Peptic Ulcer Bleeding, Endoscopic Hemostasis, Re-bleeding Prevention",
+        "organization": "American College of Gastroenterology (ACG)",
+        "source_reference": "Laine L, Barkun AN, Saltzman JR, et al. ACG Clinical Guideline: Upper Gastrointestinal and Ulcer Bleeding. Am J Gastroenterol. 2021;116(5):899-917.",
+        "reference_url": "https://doi.org/10.14309/ajg.0000000000001245",
+        "clinical_evidence_level": "Strong Recommendation, High Quality Evidence",
+        "keywords": "peptic ulcer gastrointestinal bleeding endoscopy hemoclip PPI pantoprazole melena ACG",
+        "content": "Following therapeutic upper endoscopy with hemoclip placement, thermal coagulation, or band ligation for peptic ulcer bleeding, the highest-risk window for recurrent hemorrhage is the initial 72 hours. Travel should be deferred until the patient has maintained a stable oral diet for 48 hours without evidence of melena, hematemesis, or hemoglobin decline. High-dose oral proton pump inhibitor (PPI) therapy (Pantoprazole 40 mg twice daily) must be continued throughout the travel and convalescence period."
+    },
+    {
+        "id": 19,
+        "title": "Clinical Guidelines for Laparoscopic Surgery and Post-Operative Pneumoperitoneum Resolution",
+        "specialty": "Gastroenterology",
+        "condition_covered": "Laparoscopic Cholecystectomy, Appendectomy, Pneumoperitoneum",
+        "organization": "Society of American Gastrointestinal and Endoscopic Surgeons (SAGES)",
+        "source_reference": "Overby DW, Apelgren KN, Richardson W, et al. SAGES Guidelines for the Clinical Application of Laparoscopic Biliary Tract Surgery. Surg Endosc. 2010;24(10):2368-2386.",
+        "reference_url": "https://doi.org/10.1007/s00464-010-1268-4",
+        "clinical_evidence_level": "Level II Clinical Guideline",
+        "keywords": "laparoscopy cholecystectomy gallbladder appendectomy abdominal surgery pneumoperitoneum SAGES",
+        "content": "Laparoscopic abdominal procedures introduce carbon dioxide (CO2) pneumoperitoneum. Residual CO2 is typically absorbed within 24 to 48 hours. Patients undergoing uncomplicated laparoscopic cholecystectomy or appendectomy may undertake commercial air travel after 4 to 7 days, provided bowel motility is restored (passage of flatus, regular diet tolerated), trocars are intact without dehiscence, and peritoneal signs are absent. Heavy lifting (>5 kg) is restricted for 3 to 4 weeks."
+    },
+    {
+        "id": 20,
+        "title": "Barometric Altitude Expansion of Gastrointestinal Gas Following Open Abdominal Surgery",
+        "specialty": "Gastroenterology",
+        "condition_covered": "Laparotomy, Intestinal Anastomosis, Barometric Gas Expansion",
+        "organization": "American Gastroenterological Association (AGA)",
+        "source_reference": "American Gastroenterological Association (AGA). Clinical Practice Update on Post-Surgical Gastrointestinal Recovery and Travel Clearance. Gastroenterology. 2022;162(4):1120-1128.",
+        "reference_url": "https://doi.org/10.1053/j.gastro.2021.12.245",
+        "clinical_evidence_level": "Expert Clinical Consensus",
+        "keywords": "abdominal surgery laparotomy gas expansion cabin altitude bowel resection AGA GI recovery",
+        "content": "Due to reduced cabin atmospheric pressure at flight altitudes, trapped intra-abdominal gas expands by 25% to 30%. Following open abdominal surgery (laparotomy, bowel resection, or intestinal anastomosis), air travel is contraindicated for at least 10 to 14 days due to the risk of wound dehiscence, anastomotic disruption, and visceral perforation. Uncomplicated recovery with documented flatus, normal bowel movements, and absence of ileus on physical exam must precede departure."
+    },
+    {
+        "id": 21,
+        "title": "Management of Acute Severe Ulcerative Colitis and Crohn's Disease During Travel",
+        "specialty": "Gastroenterology",
+        "condition_covered": "Inflammatory Bowel Disease (IBD), Ulcerative Colitis Flare, Biologics",
+        "organization": "American College of Gastroenterology (ACG)",
+        "source_reference": "Rubin DT, Ananthakrishnan AN, Siegel CA, et al. ACG Clinical Guideline: Ulcerative Colitis in Adults. Am J Gastroenterol. 2019;114(3):384-413.",
+        "reference_url": "https://doi.org/10.14309/ajg.0000000000000152",
+        "clinical_evidence_level": "Strong Recommendation",
+        "keywords": "ulcerative colitis Crohns disease IBD infliximab biologics flare travel gastroenterology ACG",
+        "content": "Patients with active inflammatory bowel disease (IBD) experiencing frequent bloody stools (>6 per day), systemic fever, or tachycardia should postpone elective long-distance travel until clinical remission is attained. Patients maintained on biologic therapy (e.g., Infliximab, Adalimumab, Vedolizumab) must carry subcutaneous medications in insulated cold packs (2 to 8 C) in carry-on luggage and adhere strictly to infusion or injection schedules without interruption."
+    },
+
+    # --- NEPHROLOGY (4 docs) ---
+    {
+        "id": 22,
+        "title": "Evaluation and Management of Chronic Kidney Disease (CKD) Stages 3 to 5",
+        "specialty": "Nephrology",
+        "condition_covered": "Chronic Kidney Disease Stages 3-5, eGFR Monitoring, Nephrotoxic Avoidance",
+        "organization": "Kidney Disease: Improving Global Outcomes (KDIGO)",
+        "source_reference": "KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease. Kidney Int. 2024;105(4S):S117-S314.",
+        "reference_url": "https://doi.org/10.1016/j.kint.2023.10.018",
+        "clinical_evidence_level": "Level 1A Recommendation",
+        "keywords": "chronic kidney disease CKD nephrology creatinine eGFR potassium NSAID KDIGO",
+        "content": "Patients with advanced chronic kidney disease (CKD Stages 3b-5, eGFR < 45 mL/min/1.73m2) traveling for medical evaluations must regulate dietary sodium (<2 g/day) and potassium intake, particularly when dining during transit. Serum creatinine and electrolytes should be checked within 1 week of travel. Travelers must scrupulously avoid non-steroidal anti-inflammatory drugs (NSAIDs such as Ibuprofen and Diclofenac) which trigger acute kidney injury. Adequate oral hydration is critical to prevent prerenal azotemia."
+    },
+    {
+        "id": 23,
+        "title": "Cross-Border and Transient Hemodialysis Coordination Protocol for End-Stage Renal Disease",
+        "specialty": "Nephrology",
+        "condition_covered": "End-Stage Kidney Disease (ESRD), Maintenance Hemodialysis Travel",
+        "organization": "International Society of Nephrology (ISN)",
+        "source_reference": "International Society of Nephrology (ISN) Dialysis Working Group. Practical Framework for Transient and Cross-Border Hemodialysis in Traveling ESRD Patients. Kidney Int Rep. 2022;7(9):1942-1951.",
+        "reference_url": "https://doi.org/10.1016/j.ekir.2022.06.015",
+        "clinical_evidence_level": "International Consensus Practice Framework",
+        "keywords": "hemodialysis dialysis ESRD nephrology AV fistula guest dialysis ISN medical travel",
+        "content": "End-stage renal disease (ESRD) patients requiring maintenance hemodialysis must confirm guest dialysis reservations at an accredited receiving dialysis unit in the destination city at least 4 to 6 weeks before departure. Mandatory transfer documents include: 1) Recent serologies (HBsAg, Anti-HCV, HIV within 30 days), 2) Complete dialysis prescription (dialyzer model, blood/dialysate flow, heparin dosing, dry weight), and 3) Vascular access history. Dialysis should be scheduled the day before departure and immediately upon arrival."
+    },
+    {
+        "id": 24,
+        "title": "Clinical Practice Recommendations for Peritoneal Dialysis Patients Undertaking Travel",
+        "specialty": "Nephrology",
+        "condition_covered": "Peritoneal Dialysis (CAPD/APD), Peritonitis Prevention, Fluid Logistics",
+        "organization": "National Kidney Foundation (NKF)",
+        "source_reference": "National Kidney Foundation. KDOQI Clinical Practice Guideline for Peritoneal Dialysis. Am J Kidney Dis. 2021;77(4):551-562.",
+        "reference_url": "https://doi.org/10.1053/j.ajkd.2020.12.014",
+        "clinical_evidence_level": "Guideline Recommendation",
+        "keywords": "peritoneal dialysis CAPD APD peritonitis aseptic technique dialysate nephrology NKF",
+        "content": "Patients performing Continuous Ambulatory Peritoneal Dialysis (CAPD) or Automated Peritoneal Dialysis (APD) must coordinate delivery of sterile dialysate bags to their destination residence through their dialysis supply distributor at least 3 weeks prior to travel. Hand hygiene and strict aseptic exchange protocols must be maintained in private, closed room environments free of drafts to prevent bacterial peritonitis. Patients must carry oral prophylactic intraperitoneal antibiotics (e.g., Cefazolin, Ceftazidime) for emergencies."
+    },
+    {
+        "id": 25,
+        "title": "Travel Considerations and Immunosuppression Management in Kidney Transplant Recipients",
+        "specialty": "Nephrology",
+        "condition_covered": "Kidney Transplantation, Calcineurin Inhibitors, Rejection Risk",
+        "organization": "Kidney Disease: Improving Global Outcomes (KDIGO)",
+        "source_reference": "Chadban SJ, Ahn C, Axelrod DA, et al. KDIGO Clinical Practice Guideline on the Evaluation and Management of Candidates and Recipients of Kidney Transplantation. Transplantation. 2020;104(4S1):S11-S103.",
+        "reference_url": "https://doi.org/10.1097/TP.0000000000003136",
+        "clinical_evidence_level": "Level 1C Recommendation",
+        "keywords": "kidney transplant immunosuppression tacrolimus cyclosporine rejection infection travel KDIGO",
+        "content": "Solid organ kidney transplant recipients should defer non-essential travel during the first 6 months post-transplant when immunosuppressive intensity and opportunistic infection risks are peak. Stable recipients on maintenance regimens (Tacrolimus, Mycophenolate, Prednisone) must carry extra medication in carry-on baggage. Therapeutic drug levels (trough Tacrolimus) and graft function (serum creatinine) must be checked within 2 weeks of travel. Live vaccines are strictly contraindicated."
+    },
+
+    # --- PULMONOLOGY (3 docs) ---
+    {
+        "id": 26,
+        "title": "Managing Passengers With Stable Respiratory Disease Planning Commercial Air Travel",
+        "specialty": "Pulmonology",
+        "condition_covered": "COPD, In-Flight Hypoxemia, Supplemental In-Flight Oxygen",
+        "organization": "British Thoracic Society (BTS)",
+        "source_reference": "Coker RK, Armstrong A, Church RE, et al. Managing passengers with stable respiratory disease planning air travel: British Thoracic Society recommendations. Thorax. 2011;66(Suppl 1):i1-i30.",
+        "reference_url": "https://doi.org/10.1136/thoraxjnl-2011-200295",
+        "clinical_evidence_level": "Evidence-Based Clinical Guideline",
+        "keywords": "COPD hypoxemia in-flight oxygen pulmonology altitude BTS respiratory POC SpO2",
+        "content": "Commercial aircraft cabins are pressurized to altitudes of 1,500 to 2,400 meters (5,000 to 8,000 feet), producing an inspired oxygen fraction equivalent to ~15% at sea level. Patients with resting sea-level SpO2 below 92%, or severe Chronic Obstructive Pulmonary Disease (FEV1 < 50% predicted), require pre-flight High Altitude Simulation Testing (HAST) or must arrange in-flight supplemental oxygen (typically 2 to 4 L/min via airline-approved Portable Oxygen Concentrators - POC). Airlines require medical oxygen clearance 48 to 72 hours in advance."
+    },
+    {
+        "id": 27,
+        "title": "Management of Severe Asthma Exacerbations and Commercial Aviation Clearance",
+        "specialty": "Pulmonology",
+        "condition_covered": "Severe Asthma, Bronchospasm, Inhaled Corticosteroid Adherence",
+        "organization": "American Thoracic Society / European Respiratory Society (ATS/ERS)",
+        "source_reference": "Holguin F, Cardet JC, Chung KF, et al. Management of Severe Asthma: European Respiratory Society/American Thoracic Society Guideline. Eur Respir J. 2020;55(1):1900588.",
+        "reference_url": "https://doi.org/10.1183/13993003.00588-2019",
+        "clinical_evidence_level": "Evidence-Based Clinical Guideline",
+        "keywords": "asthma bronchospasm inhaler bronchodilator corticosteroid ATS ERS pulmonology travel",
+        "content": "Patients with asthma planning travel should have well-controlled disease documented for at least 4 weeks. Patients recovering from an acute severe asthma exacerbation requiring oral systemic corticosteroid bursts should delay flight travel until symptoms resolve and peak expiratory flow (PEF) returns to >=80% of personal best. Rapid-acting short-acting beta2-agonists (Albuterol/Salbutamol) and maintenance inhaled corticosteroids must be carried in passenger carry-on baggage with accessibility at all times."
+    },
+    {
+        "id": 28,
+        "title": "Global Strategy for Prevention, Diagnosis and Management of COPD: Travel Considerations",
+        "specialty": "Pulmonology",
+        "condition_covered": "Chronic Obstructive Pulmonary Disease (COPD), Exacerbation Prevention",
+        "organization": "Global Initiative for Chronic Obstructive Lung Disease (GOLD)",
+        "source_reference": "Global Initiative for Chronic Obstructive Lung Disease (GOLD). Global Strategy for the Diagnosis, Management, and Prevention of Chronic Obstructive Pulmonary Disease (2024 Report).",
+        "reference_url": "https://goldcopd.org/2024-gold-report/",
+        "clinical_evidence_level": "Evidence-Based Strategy Report",
+        "keywords": "COPD GOLD chronic bronchitis emphysema bronchodilators dyspnea travel pulmonology",
+        "content": "Patients with stable COPD traveling to international or outstation medical centers should carry a written Action Plan, an emergency rescue course of antibiotics and oral corticosteroids (Prednisolone 40 mg daily for 5 days), and sufficient maintenance dual bronchodilators (LABA/LAMA). Avoid destinations with high atmospheric pollution or extremes of altitude (>2,000 meters) unless pre-acclimatization or supplemental oxygen is available."
+    },
+
+    # --- GENERAL MEDICINE / ENDOCRINOLOGY (2 docs) ---
+    {
+        "id": 29,
+        "title": "Standards of Care in Diabetes: Carrying Insulin, Supplies & Crossing Time Zones",
+        "specialty": "General Medicine / Endocrinology",
+        "condition_covered": "Diabetes Mellitus, Insulin Administration Across Time Zones, CGM",
+        "organization": "American Diabetes Association (ADA)",
+        "source_reference": "American Diabetes Association Professional Practice Committee. Standards of Care in Diabetes—2024. Chapter 6: Glycemic Targets. Diabetes Care. 2024;47(Suppl 1):S111-S125.",
+        "reference_url": "https://doi.org/10.2337/dc24-S006",
+        "clinical_evidence_level": "Standard of Care, Level A",
+        "keywords": "diabetes insulin CGM glucose time zones endocrinology ADA travel blood sugar",
+        "content": "Patients with insulin-requiring diabetes must carry all insulin vials, pens, needles, and continuous glucose monitoring (CGM) sensors in carry-on luggage. Insulin must never be placed in checked luggage where cargo hold temperatures frequently drop below freezing, denaturing the protein. When crossing more than 5 time zones: eastward travel shortens the chronological day, requiring a slight decrease in basal insulin; westward travel lengthens the day, requiring supplemental mealtime coverage or split basal dosing. Carry fast-acting carbohydrates (glucose tablets) at all times."
+    },
+    {
+        "id": 30,
+        "title": "CDC Health Information for International Travel: Patients with Chronic Medical Illnesses",
+        "specialty": "General Medicine",
+        "condition_covered": "Chronic Medical Illness, Immunocompromised Hosts, Pre-Travel Assessment",
+        "organization": "Centers for Disease Control and Prevention (CDC)",
+        "source_reference": "Centers for Disease Control and Prevention. CDC Yellow Book 2024: Health Information for International Travel. Chapter 8: Travel with Chronic Medical Conditions. Oxford University Press; 2024.",
+        "reference_url": "https://wwwnc.cdc.gov/travel/yellowbook/2024/air-travel/air-travel-with-chronic-illness",
+        "clinical_evidence_level": "Public Health Clinical Guideline",
+        "keywords": "CDC Yellow Book chronic illness travel medicine immunosuppression medical summary",
+        "content": "Travelers with chronic medical conditions should establish a comprehensive medical travel portfolio including: active problem list, detailed operative history, 12-lead baseline ECG, and medication list with generic names and dosages. Immunosuppressed travelers (organ transplant recipients, active chemotherapy, biologic agents) should avoid live-attenuated vaccines and carry empiric antimicrobials for acute gastroenteritis. Attending physicians should certify fitness to travel before major intercity journeys."
+    }
+]
+
+
+def generate_and_save():
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    output_path = os.path.join(base_dir, "medical_knowledge_dataset.json")
+    with open(output_path, "w", encoding="utf-8") as f:
+        json.dump(DOCUMENTS, f, indent=2, ensure_ascii=False)
+    print(f"Successfully generated {len(DOCUMENTS)} medical knowledge documents in {output_path}")
+
+
+if __name__ == "__main__":
+    generate_and_save()

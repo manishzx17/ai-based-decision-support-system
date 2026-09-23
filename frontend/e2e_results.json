@@ -1,0 +1,117 @@
+{
+  "framework": "Playwright (Chromium)",
+  "testFile": "frontend/e2e_browser_test.cjs",
+  "samplePatient": "Rahul Verma (user_id: 1)",
+  "sampleReport": "report_01_cardio_angiogram.pdf",
+  "startTime": "2026-09-23T10:59:38.916Z",
+  "steps": {
+    "0_login_flow": {
+      "status": "PASS",
+      "url": "http://127.0.0.1:5173/dashboard"
+    },
+    "1_main_navigation": {
+      "status": "PASS",
+      "navItems": [
+        "Dashboard",
+        "Medical Report Intelligence",
+        "Clinical Profile",
+        "Medical Analysis / RAG",
+        "Personalized Hospital Recommendations",
+        "Cost & Length of Stay Prediction",
+        "AI Healthcare Assistant",
+        "Medical Travel & Local Connectivity"
+      ]
+    },
+    "2_medical_report_upload": {
+      "status": "PASS",
+      "report_id": "255",
+      "url": "http://127.0.0.1:5173/reports/255/analysis"
+    },
+    "3_clinical_profile": {
+      "status": "PASS",
+      "synced": true
+    },
+    "4_medical_analysis_rag": {
+      "status": "PASS",
+      "hasRAGCitations": true
+    },
+    "5_recommendations": {
+      "status": "PASS",
+      "hasHospitals": true,
+      "hasScoring": true
+    },
+    "6_cost_los_shap": {
+      "status": "PASS",
+      "hasCostPred": true,
+      "hasLosPred": true,
+      "hasSHAP": true,
+      "hasTreeSHAPValidation": true
+    },
+    "7_assistant_contextual": {
+      "status": "PASS",
+      "hasContextualResponse": true,
+      "hasCitations": true
+    },
+    "8_safety_guardrails": {
+      "status": "PASS",
+      "medication_guardrail": true,
+      "diagnosis_guardrail": true,
+      "insufficient_evidence_guardrail": true
+    },
+    "9_medical_travel": {
+      "status": "PASS",
+      "hasTravelContent": true
+    },
+    "10_navigation_integrity": {
+      "status": "PASS",
+      "settingsRedirected": true,
+      "unknownRedirected": true
+    }
+  },
+  "consoleErrors": [],
+  "failedRequests": [],
+  "screenshots": [
+    {
+      "step": "Login",
+      "path": "/Users/manish/Desktop/Major-Project-samp1/test_screenshots/00_login.png"
+    },
+    {
+      "step": "Dashboard",
+      "path": "/Users/manish/Desktop/Major-Project-samp1/test_screenshots/01_dashboard.png"
+    },
+    {
+      "step": "Uploaded Report Analysis",
+      "path": "/Users/manish/Desktop/Major-Project-samp1/test_screenshots/02_uploaded_report_analysis.png"
+    },
+    {
+      "step": "Clinical Profile",
+      "path": "/Users/manish/Desktop/Major-Project-samp1/test_screenshots/03_clinical_profile.png"
+    },
+    {
+      "step": "Medical Analysis / RAG",
+      "path": "/Users/manish/Desktop/Major-Project-samp1/test_screenshots/04_rag_guidelines.png"
+    },
+    {
+      "step": "Recommendations",
+      "path": "/Users/manish/Desktop/Major-Project-samp1/test_screenshots/05_recommendations.png"
+    },
+    {
+      "step": "Cost & LOS + SHAP",
+      "path": "/Users/manish/Desktop/Major-Project-samp1/test_screenshots/06_cost_los_shap.png"
+    },
+    {
+      "step": "AI Assistant Contextual Response",
+      "path": "/Users/manish/Desktop/Major-Project-samp1/test_screenshots/07_ai_assistant_contextual.png"
+    },
+    {
+      "step": "Safety Guardrails",
+      "path": "/Users/manish/Desktop/Major-Project-samp1/test_screenshots/08_ai_assistant_safety_guardrails.png"
+    },
+    {
+      "step": "Medical Travel",
+      "path": "/Users/manish/Desktop/Major-Project-samp1/test_screenshots/09_medical_travel.png"
+    }
+  ],
+  "endTime": "2026-09-23T11:00:29.272Z",
+  "overallStatus": "PASS"
+}

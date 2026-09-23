@@ -49,7 +49,7 @@ export const SettingsPage: React.FC = () => {
 
             <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
               <div>
-                <p className="font-bold text-slate-900">OCR & ClinicalBERT NLP Engine</p>
+                <p className="font-bold text-slate-900">OCR & Biomedical NER Engine</p>
                 <p className="text-slate-500 text-[11px]">Local entity extraction module</p>
               </div>
               <span className="font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded border border-emerald-200">Active</span>
@@ -74,7 +74,7 @@ export const SettingsPage: React.FC = () => {
 
           <div className="space-y-3 text-xs">
             <label className="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200 cursor-pointer">
-              <span className="font-semibold text-slate-800">Enable Medical Travel Reminders & Itinerary Alerts</span>
+              <span className="font-semibold text-slate-800">Enable Clinical Guideline & Follow-up Reminders</span>
               <input
                 type="checkbox"
                 checked={notifications}

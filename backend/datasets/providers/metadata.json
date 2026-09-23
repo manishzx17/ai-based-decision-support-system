@@ -1,0 +1,56 @@
+{
+  "dataset_name": "Dataset 3: Synthetic Research Benchmark Dataset of Healthcare Providers & Specialists",
+  "version": "1.0.0",
+  "dataset_type": "Provider & Specialist Dataset for Decision Support Algorithm Evaluation",
+  "created_at": "2026-09-09",
+  "description": "A curated and synthetic research benchmark dataset containing 60 multi-specialty hospitals and 210 clinical specialists across 6 Indian medical travel hubs (Hyderabad, Bengaluru, Chennai, Mumbai, Delhi-NCR, Kolkata). Designed specifically for evaluating transparent eligibility filtering and explainable multi-criteria ranking algorithms.",
+  "total_hospitals": 60,
+  "total_doctors": 210,
+  "medical_hubs": [
+    "Hyderabad",
+    "Bengaluru",
+    "Chennai",
+    "Mumbai",
+    "Delhi-NCR",
+    "Kolkata"
+  ],
+  "provenance_policy": {
+    "is_synthetic_benchmark": true,
+    "directory_curated_fields": ["name", "city", "state", "address", "lat", "lng", "specialties", "facilities"],
+    "synthetic_benchmark_fields": ["rating", "experience_years", "consultation_fee", "estimated_cost_tier", "quality_rating"],
+    "ethical_notice": "Ratings, doctor experience, fees, and operational cost tiers are synthetic simulation attributes generated for algorithm evaluation and decision support prototyping. They must not be interpreted as real-world official performance evaluations."
+  },
+  "hospital_schema": {
+    "id": "Unique integer identifier",
+    "name": "Facility name",
+    "city": "Metropolitan medical hub",
+    "state": "State",
+    "address": "Street address",
+    "lat": "Geographic latitude",
+    "lng": "Geographic longitude",
+    "specialties": "List of recognized clinical specialty departments",
+    "facilities": "List of diagnostic and critical care facilities",
+    "treatment_capabilities": "List of specific advanced procedure capabilities",
+    "cost_tier": "Categorical cost level (Budget, Moderate, Premium)",
+    "estimated_cost_tier": "Baseline procedure cost estimate in INR",
+    "quality_rating": "Clinical quality index (4.0 - 5.0)",
+    "rating": "Patient feedback rating (4.0 - 5.0)",
+    "accreditation": "Accreditation status (NABH, JCI, NABH & JCI)",
+    "insurance_accepted": "List of empanelled health insurers",
+    "icu_beds": "Number of dedicated ICU beds",
+    "emergency_24x7": "Boolean indicator of 24x7 emergency service"
+  },
+  "doctor_schema": {
+    "id": "Unique integer identifier",
+    "hospital_id": "Affiliated hospital identifier",
+    "hospital_name": "Affiliated hospital name",
+    "name": "Doctor name",
+    "specialty": "Clinical specialty department",
+    "expertise": "Specific clinical sub-specialty or procedure expertise",
+    "experience_years": "Years of clinical practice",
+    "qualification": "Medical degrees and fellowship credentials",
+    "rating": "Patient satisfaction rating (4.0 - 5.0)",
+    "consultation_fee": "Outpatient consultation fee in INR",
+    "availability_days": "Scheduled outpatient clinic days"
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "dataset_name": "Dataset 4: Synthetic Clinical & Economic Benchmark Dataset",
+  "dataset_label": "Synthetic Research Benchmark Data",
+  "is_real_patient_records": false,
+  "total_episodes": 2500,
+  "calibration_sources": [
+    "National Health Authority (NHA / PMJAY) Standard Health Benefit Package Tariffs",
+    "General Insurance Public Sector Association (GIPSA) Preferred Provider Network (PPN) Schedule of Charges"
+  ],
+  "disclosure": "Dataset 4 consists of 2,500 synthetic benchmark procedure episodes generated for algorithm development and testing. It contains zero real patient or private billing records. High benchmark model performance reflects the synthetic calibration process and does not establish real-world clinical validity.",
+  "attributes": [
+    "patient_id",
+    "age",
+    "gender",
+    "has_diabetes",
+    "has_hypertension",
+    "has_cardiac_history",
+    "comorbidity_count",
+    "treatment_name",
+    "specialty",
+    "city",
+    "hospital_tier",
+    "room_type",
+    "insurance_type",
+    "planned_los_days",
+    "hospitalization_los_days",
+    "treatment_cost_inr"
+  ],
+  "procedures_covered": [
+    "Total Knee Replacement",
+    "Craniotomy",
+    "CABG",
+    "Nephrectomy",
+    "Laparoscopic Cholecystectomy",
+    "Appendectomy",
+    "Chemotherapy Cycle",
+    "Coronary Angioplasty"
+  ],
+  "medical_hubs": [
+    "Bengaluru",
+    "Mumbai",
+    "Chennai",
+    "Kolkata",
+    "Delhi",
+    "Hyderabad"
+  ],
+  "hospital_tiers": [
+    "Tier 2 Tertiary",
+    "Tier 1 Apex/Metro"
+  ],
+  "room_categories": [
+    "Private AC Deluxe",
+    "Semi-Private AC",
+    "Super Deluxe Suite",
+    "General Ward"
+  ]
+}
