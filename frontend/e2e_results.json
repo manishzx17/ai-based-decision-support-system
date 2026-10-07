@@ -3,7 +3,7 @@
   "testFile": "frontend/e2e_browser_test.cjs",
   "samplePatient": "Rahul Verma (user_id: 1)",
   "sampleReport": "report_01_cardio_angiogram.pdf",
-  "startTime": "2026-09-23T10:59:38.916Z",
+  "startTime": "2026-09-30T17:05:54.132Z",
   "steps": {
     "0_login_flow": {
       "status": "PASS",
@@ -24,8 +24,8 @@
     },
     "2_medical_report_upload": {
       "status": "PASS",
-      "report_id": "255",
-      "url": "http://127.0.0.1:5173/reports/255/analysis"
+      "report_id": "4",
+      "url": "http://127.0.0.1:5173/reports/4/analysis"
     },
     "3_clinical_profile": {
       "status": "PASS",
@@ -112,6 +112,6 @@
       "path": "/Users/manish/Desktop/Major-Project-samp1/test_screenshots/09_medical_travel.png"
     }
   ],
-  "endTime": "2026-09-23T11:00:29.272Z",
+  "endTime": "2026-09-30T17:06:59.017Z",
   "overallStatus": "PASS"
 }

@@ -1,5 +1,6 @@
 import math
 import urllib.parse
+import re
 import requests
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
@@ -42,6 +43,58 @@ GEOCODE_CACHE: Dict[str, Dict[str, Any]] = {
     "chennai": {"name": "Chennai, Tamil Nadu, India", "lat": 13.0827, "lon": 80.2707},
 }
 
+REVERSE_GEOCODE_CACHE: Dict[str, Dict[str, Any]] = {}
+
+def reverse_geocode_coords(lat: float, lon: float) -> Dict[str, Any]:
+    """Free OpenStreetMap Nominatim reverse geocoding with local cache and fallback."""
+    cache_key = f"{round(lat, 4)},{round(lon, 4)}"
+    if cache_key in REVERSE_GEOCODE_CACHE:
+        return REVERSE_GEOCODE_CACHE[cache_key]
+
+    url = f"https://nominatim.openstreetmap.org/reverse?lat={lat}&lon={lon}&format=json"
+    headers = {"User-Agent": "MedicalTravelDSS-OpenSource/1.0"}
+    try:
+        resp = requests.get(url, headers=headers, timeout=6.0)
+        if resp.status_code == 200:
+            data = resp.json()
+            if data:
+                addr = data.get("address", {})
+                parts = []
+                road_suburb = addr.get("road") or addr.get("suburb") or addr.get("neighbourhood") or addr.get("residential")
+                if road_suburb:
+                    parts.append(road_suburb)
+                city = addr.get("city") or addr.get("town") or addr.get("municipality") or addr.get("county")
+                if city and city not in parts:
+                    parts.append(city)
+                state = addr.get("state")
+                if state and state not in parts:
+                    parts.append(state)
+                
+                readable = ", ".join(parts) if parts else data.get("display_name", f"{lat:.5f}, {lon:.5f}")
+                res = {
+                    "lat": lat,
+                    "lon": lon,
+                    "address": readable,
+                    "display_name": data.get("display_name", readable),
+                    "city": city or "",
+                    "state": state or ""
+                }
+                REVERSE_GEOCODE_CACHE[cache_key] = res
+                return res
+    except Exception as e:
+        print(f"Nominatim reverse geocode exception: {e}")
+
+    fallback_res = {
+        "lat": lat,
+        "lon": lon,
+        "address": f"Live Location ({lat:.4f}, {lon:.4f})",
+        "display_name": f"Live Location ({lat:.5f}, {lon:.5f})",
+        "city": "",
+        "state": ""
+    }
+    return fallback_res
+
+
 def geocode_address(query: str) -> Optional[Dict[str, Any]]:
     """Free OpenStreetMap Nominatim geocoding with local cache and fallback."""
     if not query or not query.strip():
@@ -49,6 +102,22 @@ def geocode_address(query: str) -> Optional[Dict[str, Any]]:
     q_norm = query.strip().lower()
     if q_norm in GEOCODE_CACHE:
         return GEOCODE_CACHE[q_norm]
+
+    # Check if query contains coordinates (e.g. "12.9716, 77.5946" or "Live Location (12.9716, 77.5946)")
+    coord_match = re.search(r"([-+]?\d{1,2}(?:\.\d+)?)\s*,\s*([-+]?\d{1,3}(?:\.\d+)?)", query)
+    if coord_match:
+        try:
+            lat = float(coord_match.group(1))
+            lon = float(coord_match.group(2))
+            if -90.0 <= lat <= 90.0 and -180.0 <= lon <= 180.0:
+                rev = reverse_geocode_coords(lat, lon)
+                return {
+                    "name": rev.get("address") or query,
+                    "lat": lat,
+                    "lon": lon
+                }
+        except Exception:
+            pass
 
     # Partial match in local cache for speed and rate-limit resilience
     for key, cached_val in GEOCODE_CACHE.items():
@@ -73,6 +142,15 @@ def geocode_address(query: str) -> Optional[Dict[str, Any]]:
     except Exception as e:
         print(f"Nominatim geocode exception: {e}")
     return None
+
+
+@router.get("/reverse-geocode")
+def get_reverse_geocode(lat: float = Query(...), lon: float = Query(...)):
+    """
+    Reverse geocodes latitude/longitude into a readable address using OpenStreetMap Nominatim.
+    100% Free & Open-Source (Zero Google Maps Platform dependencies).
+    """
+    return reverse_geocode_coords(lat, lon)
 
 
 @router.post("/route", response_model=OpenRouteResponse)

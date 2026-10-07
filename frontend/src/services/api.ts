@@ -967,4 +967,17 @@ export async function getEmergencyServices(city?: string, hospitalId?: number): 
   return await fetchApi<EmergencyServicesResponse>(`/travel/emergency?${query.toString()}`);
 }
 
+export interface ReverseGeocodeResponse {
+  lat: number;
+  lon: number;
+  address: string;
+  display_name?: string;
+  city?: string;
+  state?: string;
+}
+
+export async function reverseGeocode(lat: number, lon: number): Promise<ReverseGeocodeResponse> {
+  return await fetchApi<ReverseGeocodeResponse>(`/travel/reverse-geocode?lat=${lat}&lon=${lon}`);
+}
+
 

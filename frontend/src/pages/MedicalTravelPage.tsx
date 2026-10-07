@@ -5,7 +5,7 @@ import {
   Compass, ExternalLink, AlertCircle, ArrowRightLeft,
   CheckCircle2, Loader2, Sparkles, Building2, Hotel,
   Pill, PhoneCall, ShieldAlert, HeartPulse, Siren,
-  Route, ChevronRight, Search
+  Route, ChevronRight, Search, LocateFixed
 } from 'lucide-react';
 import L from 'leaflet';
 import {
@@ -15,7 +15,8 @@ import {
   OpenRouteResponse,
   NearbyPOI,
   EmergencyServicesResponse,
-  getHospitalById
+  getHospitalById,
+  reverseGeocode
 } from '../services/api';
 
 type TravelMode = 'car' | 'two_wheeler' | 'walking' | 'bicycle' | 'transit';
@@ -52,6 +53,12 @@ export const MedicalTravelPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [routeResult, setRouteResult] = useState<OpenRouteResponse | null>(null);
+
+  // Geolocation & Live Location State
+  const [loadingLocation, setLoadingLocation] = useState<boolean>(false);
+  const [locationError, setLocationError] = useState<string | null>(null);
+  const [liveLocationSuccess, setLiveLocationSuccess] = useState<string | null>(null);
+  const liveMarkerRef = useRef<L.Marker | null>(null);
 
   // POI Search States
   const [poiAnchor, setPoiAnchor] = useState<string>('Apollo Hospital, Bannerghatta Road, Bangalore');
@@ -119,6 +126,10 @@ export const MedicalTravelPage: React.FC = () => {
     }
 
     return () => {
+      if (liveMarkerRef.current) {
+        liveMarkerRef.current.remove();
+        liveMarkerRef.current = null;
+      }
       if (mapInstanceRef.current) {
         mapInstanceRef.current.remove();
         mapInstanceRef.current = null;
@@ -130,6 +141,11 @@ export const MedicalTravelPage: React.FC = () => {
   // Update map polyline and markers when routeResult updates
   useEffect(() => {
     if (!mapInstanceRef.current || !routeLayerGroupRef.current || !routeResult) return;
+
+    if (liveMarkerRef.current) {
+      liveMarkerRef.current.remove();
+      liveMarkerRef.current = null;
+    }
 
     const layerGroup = routeLayerGroupRef.current;
     layerGroup.clearLayers();
@@ -315,6 +331,111 @@ export const MedicalTravelPage: React.FC = () => {
     }, 100);
   };
 
+  // Live Location & Reverse-Geocoding Handler via browser Geolocation API
+  const handleUseLiveLocation = () => {
+    if (!navigator.geolocation) {
+      setLocationError('Geolocation is not supported by your current browser.');
+      return;
+    }
+
+    setLoadingLocation(true);
+    setLocationError(null);
+    setLiveLocationSuccess(null);
+
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const lat = pos.coords.latitude;
+        const lon = pos.coords.longitude;
+
+        // 1. Center Leaflet map on live coordinates & render pulse marker
+        if (mapInstanceRef.current) {
+          mapInstanceRef.current.setView([lat, lon], 14, { animate: true });
+
+          if (liveMarkerRef.current) {
+            liveMarkerRef.current.remove();
+          }
+
+          const liveIcon = L.divIcon({
+            className: 'custom-live-location-icon',
+            html: `<div style="position:relative; width:30px; height:30px; display:flex; align-items:center; justify-content:center;">
+              <span style="position:absolute; width:100%; height:100%; border-radius:50%; background:rgba(16,185,129,0.35); animation:ping 1.5s cubic-bezier(0,0,0.2,1) infinite;"></span>
+              <div style="background-color:#10b981; width:22px; height:22px; border-radius:50%; border:3px solid white; box-shadow:0 2px 6px rgba(0,0,0,0.35); display:flex; align-items:center; justify-content:center; color:white; font-size:10px; font-weight:bold;">
+                ●
+              </div>
+            </div>`,
+            iconSize: [30, 30],
+            iconAnchor: [15, 15],
+          });
+
+          const marker = L.marker([lat, lon], { icon: liveIcon })
+            .bindPopup(`<strong>Your Live Location</strong><br/>${lat.toFixed(5)}, ${lon.toFixed(5)}`);
+          marker.addTo(mapInstanceRef.current);
+          marker.openPopup();
+          liveMarkerRef.current = marker;
+        }
+
+        // 2. Reverse-geocode to a human-readable location address
+        let resolvedAddress = `${lat.toFixed(5)}, ${lon.toFixed(5)}`;
+        try {
+          const rev = await reverseGeocode(lat, lon);
+          if (rev && rev.address) {
+            resolvedAddress = rev.address;
+          }
+        } catch (backendErr) {
+          console.warn('Backend reverse-geocode failed, falling back to direct OSM lookup:', backendErr);
+          try {
+            const resp = await fetch(
+              `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`,
+              { headers: { 'Accept': 'application/json' } }
+            );
+            if (resp.ok) {
+              const data = await resp.json();
+              if (data) {
+                const addr = data.address || {};
+                const parts = [
+                  addr.road || addr.suburb || addr.neighbourhood,
+                  addr.city || addr.town || addr.county,
+                  addr.state
+                ].filter(Boolean);
+                resolvedAddress = parts.length > 0 ? parts.join(', ') : (data.display_name || resolvedAddress);
+              }
+            }
+          } catch (osmErr) {
+            console.warn('Direct OSM lookup failed, using coordinates format:', osmErr);
+          }
+        }
+
+        setOrigin(resolvedAddress);
+        setLiveLocationSuccess(`Live location active: ${resolvedAddress}`);
+        setLoadingLocation(false);
+      },
+      (geoErr) => {
+        setLoadingLocation(false);
+        let errorMsg = 'Could not determine your location. Please enter origin manually.';
+        switch (geoErr.code) {
+          case geoErr.PERMISSION_DENIED:
+            errorMsg = 'Location permission was denied. Please allow location access in your browser settings to use live location.';
+            break;
+          case geoErr.POSITION_UNAVAILABLE:
+            errorMsg = 'Location information is currently unavailable. Please verify device GPS/network location settings.';
+            break;
+          case geoErr.TIMEOUT:
+            errorMsg = 'Location request timed out. Please try again or enter your origin address manually.';
+            break;
+          default:
+            errorMsg = geoErr.message || errorMsg;
+            break;
+        }
+        setLocationError(errorMsg);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 60000,
+      }
+    );
+  };
+
   const handleSwap = () => {
     const temp = origin;
     setOrigin(destination);
@@ -438,20 +559,80 @@ export const MedicalTravelPage: React.FC = () => {
 
               <form onSubmit={handleCalculateRoute} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 flex items-center gap-1.5">
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
-                    Origin Address / Location
-                  </label>
+                  <div className="flex items-center justify-between gap-2 mb-1.5">
+                    <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                      Origin Address / Location
+                    </label>
+                    <button
+                      type="button"
+                      id="btn-use-live-location"
+                      onClick={handleUseLiveLocation}
+                      disabled={loadingLocation}
+                      className="inline-flex items-center gap-1.5 text-[11px] font-bold text-sky-700 dark:text-sky-300 bg-sky-50 dark:bg-sky-950/70 hover:bg-sky-100 dark:hover:bg-sky-900/80 px-2.5 py-1 rounded-lg border border-sky-200 dark:border-sky-800 transition-all shadow-xs active:scale-95 disabled:opacity-60 cursor-pointer"
+                      title="Use My Live Location (detect GPS via Geolocation API)"
+                    >
+                      {loadingLocation ? (
+                        <>
+                          <Loader2 className="w-3.5 h-3.5 animate-spin text-sky-600 dark:text-sky-400" />
+                          <span>Obtaining Location...</span>
+                        </>
+                      ) : (
+                        <>
+                          <LocateFixed className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" />
+                          <span>Use My Live Location</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
                   <div className="relative">
                     <input
                       type="text"
+                      id="origin-location-input"
                       value={origin}
-                      onChange={(e) => setOrigin(e.target.value)}
+                      onChange={(e) => {
+                        setOrigin(e.target.value);
+                        if (liveLocationSuccess) setLiveLocationSuccess(null);
+                      }}
                       placeholder="Enter city, landmark, or street address"
                       className="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-500 focus:outline-none"
                     />
                     <MapPin className="w-4 h-4 text-slate-400 absolute right-3 top-2.5 pointer-events-none" />
                   </div>
+
+                  {/* Geolocation feedback: Live Location Active */}
+                  {liveLocationSuccess && (
+                    <div className="mt-2 p-2 px-3 rounded-lg bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 text-[11px] text-emerald-800 dark:text-emerald-300 flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-1.5 overflow-hidden">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                        <span className="truncate">{liveLocationSuccess}</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setLiveLocationSuccess(null)}
+                        className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-800 font-bold shrink-0 ml-1 text-xs"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  )}
+
+                  {/* Geolocation error notification */}
+                  {locationError && (
+                    <div className="mt-2 p-2.5 rounded-lg bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-900 text-[11px] text-rose-800 dark:text-rose-200 flex items-start justify-between gap-2">
+                      <div className="flex items-start gap-1.5">
+                        <AlertCircle className="w-3.5 h-3.5 text-rose-600 shrink-0 mt-0.5" />
+                        <span>{locationError}</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setLocationError(null)}
+                        className="text-rose-600 dark:text-rose-400 hover:text-rose-800 font-bold shrink-0 ml-1 text-xs"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex justify-center -my-1">
